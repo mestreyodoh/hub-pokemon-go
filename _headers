@@ -1,0 +1,52 @@
+/*
+  # === Transporte ===
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  # === Anti-MIME sniffing / clickjacking ===
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  # === Privacidade / referrer ===
+  Referrer-Policy: strict-origin-when-cross-origin
+  # === APIs do browser desligadas ===
+  Permissions-Policy: accelerometer=(), autoplay=(), camera=(), display-capture=(), encrypted-media=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(), usb=(), xr-spatial-tracking=(), interest-cohort=()
+  # === Isolamento de origem ===
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+  Origin-Agent-Cluster: ?1
+  # === XSS filter legado desligado (CSP substitui) ===
+  X-XSS-Protection: 0
+  # === Não cachear HTML por padrão ===
+  Cache-Control: public, max-age=0, must-revalidate
+  # === CSP ===
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob:; connect-src 'self'; media-src 'self'; worker-src 'self' blob:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests
+  X-Permitted-Cross-Domain-Policies: none
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+  X-Robots-Tag: noindex, nofollow
+  Cross-Origin-Resource-Policy: same-origin
+
+/PikachuCostume/pikachu-sprites/*
+  Cache-Control: public, max-age=31536000, immutable
+  X-Robots-Tag: noindex, nofollow
+  Cross-Origin-Resource-Policy: same-origin
+
+/PikachuCostume/sprites-data.js
+  Cache-Control: public, max-age=3600
+  X-Robots-Tag: noindex, nofollow, noarchive
+  Cross-Origin-Resource-Policy: same-origin
+
+/ComunidadesBR/img/*
+  Cache-Control: public, max-age=31536000, immutable
+  X-Robots-Tag: noindex, nofollow
+  Cross-Origin-Resource-Policy: same-origin
+
+/Ditto/img/*
+  Cache-Control: public, max-age=31536000, immutable
+  X-Robots-Tag: noindex, nofollow
+  Cross-Origin-Resource-Policy: same-origin
+
+/robots.txt
+  Cache-Control: public, max-age=86400
+
+/.well-known/*
+  Cache-Control: public, max-age=86400

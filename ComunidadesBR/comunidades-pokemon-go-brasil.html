@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Comunidades Oficiais Pokémon GO — Brasil</title>
+<link rel="icon" href="../assets/PERFIL_BALL_OK.png" type="image/png"/>
+<link rel="apple-touch-icon" href="../assets/PERFIL_BALL_OK.png"/>
+<style>
+    :root {
+      --bg: #f4f6f8;
+      --bg-card: #ffffff;
+      --text: #1a1a1a;
+      --text-muted: #5c5c5c;
+      --accent: #e3350d;
+      --accent-hover: #c12c0a;
+      --border: #e0e0e0;
+      --shadow: 0 4px 14px rgba(0,0,0,0.08);
+      --header-bg: #ffffff;
+      --input-bg: #ffffff;
+      --state-bg: #f0f2f5;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0f1115;
+      --bg-card: #1a1d24;
+      --text: #f0f0f0;
+      --text-muted: #a0a0a0;
+      --accent: #ff5a36;
+      --accent-hover: #ff7a5c;
+      --border: #2a2e38;
+      --shadow: 0 4px 20px rgba(0,0,0,0.4);
+      --header-bg: #161920;
+      --input-bg: #1a1d24;
+      --state-bg: #15171c;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+      transition: background 0.3s, color 0.3s;
+      opacity: 0;
+      animation: pageFadeIn 0.4s ease forwards;
+    }
+
+    @keyframes pageFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .page-transition {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+
+    .page-transition.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .page-transition .spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    .page-transition .loading-text {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    header {
+      background: var(--header-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 1.25rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow);
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo a.home-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .logo a.home-link:hover {
+      transform: scale(1.08);
+      background: var(--accent-hover);
+    }
+
+    .logo h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex: 1;
+      max-width: 480px;
+    }
+
+    .search-box {
+      flex: 1;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 0.65rem 1rem 0.65rem 2.5rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--input-bg);
+      color: var(--text);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .search-box input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(227, 53, 13, 0.15);
+    }
+
+    .search-box::before {
+      content: "🔍";
+      position: absolute;
+      left: 0.9rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.9rem;
+      opacity: 0.6;
+    }
+
+    .theme-toggle {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.08);
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 3rem;
+    }
+
+
+    .contact-note {
+      max-width: 640px;
+      margin: 0 auto 1.75rem;
+      padding: 0.85rem 1.1rem;
+      background: var(--accent-soft, rgba(227, 53, 13, 0.08));
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 10px 10px 0;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: var(--text-muted);
+      text-align: left;
+    }
+    .contact-note a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .contact-note a:hover {
+      text-decoration: underline;
+    }
+
+    .intro {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .state-section {
+      margin-bottom: 2.5rem;
+    }
+
+    .state-title {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      padding: 0.5rem 0.9rem;
+      background: var(--state-bg);
+      border-radius: 10px;
+      border-left: 4px solid var(--accent);
+    }
+
+    .state-title .uf {
+      background: var(--accent);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.15rem 0.45rem;
+      border-radius: 6px;
+      letter-spacing: 0.03em;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.1rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      border-color: var(--accent);
+    }
+
+    [data-theme="dark"] .card:hover {
+      box-shadow: 0 8px 28px rgba(0,0,0,0.5);
+    }
+
+    .avatar {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #e3350d33, #3b4cca33);
+      border: 3px solid var(--border);
+      margin-bottom: 0.9rem;
+      object-fit: cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: var(--text-muted);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .card-name {
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-bottom: 0.35rem;
+      line-height: 1.3;
+    }
+
+    .card-location {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 0.6rem;
+      min-height: 1.3em;
+    }
+
+    .card-link {
+      font-size: 0.8rem;
+      color: var(--accent);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .card.hidden {
+      display: none;
+    }
+
+    .state-section.hidden {
+      display: none;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text-muted);
+      display: none;
+    }
+
+    .no-results.show {
+      display: block;
+    }
+
+    footer {
+      background: var(--header-bg);
+      border-top: 1px solid var(--border);
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      .header-inner {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .controls {
+        max-width: none;
+      }
+      .logo h1 {
+        font-size: 1.15rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="page-transition" id="pageTransition" aria-hidden="true">
+  <div class="spinner" aria-hidden="true"></div>
+  <span class="loading-text">Carregando…</span>
+</div>
+<header>
+<div class="header-inner">
+<div class="logo">
+<a href="../index.html" class="home-link" id="homeLink" title="Voltar ao Hub Mestre Yodoh" aria-label="Voltar ao Hub">🏠</a>
+<h1>Comunidades <span>Pokémon GO</span> Brasil</h1>
+</div>
+<div class="controls">
+<div class="search-box">
+<input autocomplete="off" id="search" placeholder="Buscar comunidade ou cidade..." type="search"/>
+</div>
+<button aria-label="Alternar tema" class="theme-toggle" id="themeToggle" title="Alternar tema">🌙</button>
+</div>
+</div>
+</header>
+<main>
+<p class="intro">Clique em qualquer bloco para abrir o Instagram da comunidade oficial.</p>
+<p class="contact-note">Não encontrou sua comunidade na lista? Entre em contato pelo e-mail <a href="mailto:contato.mestreyodoh@gmail.com">contato.mestreyodoh@gmail.com</a> para solicitarmos a inclusão.</p>
+<div id="communities">
+<!-- ALAGOAS -->
+<section class="state-section" data-state="Alagoas">
+<h2 class="state-title"><span class="uf">AL</span> Alagoas</h2>
+<div class="cards-grid">
+<a class="card" data-city="Maceió" data-name="Maceió" href="https://www.instagram.com/clube.mcz/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Maceió" data-img="maceio.jpg"/></div>
+<div class="card-name">Maceió</div>
+<div class="card-location">Praça do Bicentenário</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+</div>
+</section>
+<!-- AMAZONAS -->
+<section class="state-section" data-state="Amazonas">
+<h2 class="state-title"><span class="uf">AM</span> Amazonas</h2>
+<div class="cards-grid">
+<a class="card" data-city="Iranduba" data-name="Iranduba" href="https://instagram.com/pokemongoiranduba" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Iranduba" data-img="iranduba.jpg"/></div>
+<div class="card-name">Iranduba</div>
+<div class="card-location">Praça dos Três Poderes</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Manaus" data-name="Manaus" href="https://www.instagram.com/carrodoigor" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Manaus" data-img="carrodoigor.jpg"/></div>
+<div class="card-name">Manaus</div>
+<div class="card-location">Largo São Sebastião</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Manaus" data-name="Manaus UFAM" href="https://instagram.com/pokemongoufam" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Manaus II (UFAM)" data-img="ufam.jpg"/></div>
+<div class="card-name">Manaus II (UFAM)</div>
+<div class="card-location">Parque dos Bilhares</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+</div>
+</section>
+<!-- BAHIA -->
+<section class="state-section" data-state="Bahia">
+<h2 class="state-title"><span class="uf">BA</span> Bahia</h2>
+<div class="cards-grid">
+<a class="card" data-city="Amargosa" data-name="Amargosa" href="https://instagram.com/pogoamargosa" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Amargosa" data-img="amargosa.jpg"/></div>
+<div class="card-name">Amargosa</div>
+<div class="card-location">Praça do Bosque</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Feira de Santana" data-name="Feira de Santana" href="https://www.instagram.com/mastersfeira/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Feira de Santana" data-img="feira_santana.jpg"/></div>
+<div class="card-name">Feira de Santana</div>
+<div class="card-location">Shopping Boulevard Feira de Santana</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Salvador" data-name="Salvador" href="https://www.instagram.com/pogosalvador/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Salvador" data-img="salvador.jpg"/></div>
+<div class="card-name">Salvador</div>
+<div class="card-location">Salvador Shopping</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Salvador Norte" data-name="Salvador Norte" href="https://www.instagram.com/pokemongossanorteshopping/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Salvador (Norte)" data-img="salvador_norte.jpg"/></div>
+<div class="card-name">Salvador (Norte)</div>
+<div class="card-location">Salvador Norte Shopping</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+</div>
+</section>
+<!-- CEARÁ -->
+<section class="state-section" data-state="Ceará">
+<h2 class="state-title"><span class="uf">CE</span> Ceará</h2>
+<div class="cards-grid">
+<a class="card" data-city="Fortaleza" data-name="Fortaleza" href="https://www.instagram.com/pogoceara" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Fortaleza" data-img="ceara.jpg"/></div>
+<div class="card-name">Fortaleza</div>
+<div class="card-location">Parque do Cocó</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+</div>
+</section>
+<!-- DISTRITO FEDERAL -->
+<section class="state-section" data-state="Distrito Federal">
+<h2 class="state-title"><span class="uf">DF</span> Distrito Federal</h2>
+<div class="cards-grid">
+<a class="card" data-city="Brasília" data-name="Brasília" href="https://instagram.com/pogobsb" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Brasília" data-img="brasilia.jpg"/></div>
+<div class="card-name">Brasília</div>
+<div class="card-location">Jardim do Cerrado</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+</div>
+</section>
+<!-- ESPÍRITO SANTO -->
+<section class="state-section" data-state="Espírito Santo">
+<h2 class="state-title"><span class="uf">ES</span> Espírito Santo</h2>
+<div class="cards-grid">
+<a class="card" data-city="Cachoeiro de Itapemirim" data-name="Cachoeiro de Itapemirim" href="https://instagram.com/pogocachoeiro" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Cachoeiro de Itapemirim" data-img="cachoeiro_itaperim.jpg"/></div>
+<div class="card-name">Cachoeiro de Itapemirim</div>
+<div class="card-location">Praça Jerônimo Monteiro</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Serra" data-name="Serra" href="https://www.instagram.com/pokegoserra/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Serra" data-img="serra.jpg"/></div>
+<div class="card-name">Serra</div>
+<div class="card-location">Praça da Cidade</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Vila Velha" data-name="Vila Velha" href="https://www.instagram.com/pokemongovilavelha/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Vila Velha" data-img="vila_velha.jpg"/></div>
+<div class="card-name">Vila Velha</div>
+<div class="card-location">Parque da Prainha</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+</div>
+</section>
+<!-- GOIÁS -->
+<section class="state-section" data-state="Goiás">
+<h2 class="state-title"><span class="uf">GO</span> Goiás</h2>
+<div class="cards-grid">
+<a class="card" data-city="Anápolis" data-name="Anápolis" href="https://www.instagram.com/anapolispkgo" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Anápolis" data-img="anapolis.jpg"/></div>
+<div class="card-name">Anápolis</div>
+<div class="card-location">Parque Ambiental Ipiranga</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Goiânia" data-name="Goiânia" href="https://instagram.com/pogo_gyn" rel="noopener" target="_blank">
+<div class="avatar"></div>
+<div class="card-name">Goiânia</div>
+<div class="card-location">Parque Vaca Brava</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+</div>
+</section>
+<!-- MARANHÃO -->
+<section class="state-section" data-state="Maranhão">
+<h2 class="state-title"><span class="uf">MA</span> Maranhão</h2>
+<div class="cards-grid">
+<a class="card" data-city="São Luís" data-name="São Luís" href="https://instagram.com/pokemongo_slz" rel="noopener" target="_blank">
+<div class="avatar"><img alt="São Luís" data-img="sao_luiz.jpg"/></div>
+<div class="card-name">São Luís</div>
+<div class="card-location">São Luís Shopping</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+</div>
+</section>
+<!-- MATO GROSSO DO SUL -->
+<section class="state-section" data-state="Mato Grosso">
+<h2 class="state-title"><span class="uf">MT</span> Mato Grosso</h2>
+<div class="cards-grid">
+<a class="card" data-city="Cuiabá" data-name="Cuiabá" href="https://www.instagram.com/pokegocgms" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Cuiabá" data-img="cuiaba.jpg"/></div>
+<div class="card-name">Cuiabá</div>
+<div class="card-location">Praça Mãe Bonifácia</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+</div>
+</section>
+<!-- MATO GROSSO DO SUL -->
+<section class="state-section" data-state="Mato Grosso do Sul">
+<h2 class="state-title"><span class="uf">MS</span> Mato Grosso do Sul</h2>
+<div class="cards-grid">
+<a class="card" data-city="Campo Grande" data-name="Campo Grande" href="https://www.instagram.com/pokegocgms" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Campo Grande" data-img="campo_grande.jpg"/></div>
+<div class="card-name">Campo Grande</div>
+<div class="card-location">Praça Esportiva Belmar Fidalgo</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+</div>
+</section>
+<!-- MINAS GERAIS -->
+<section class="state-section" data-state="Minas Gerais">
+<h2 class="state-title"><span class="uf">MG</span> Minas Gerais</h2>
+<div class="cards-grid">
+<a class="card" data-city="Alfenas" data-name="Alfenas" href="https://www.instagram.com/pokemongoalfenas/" rel="noopener" target="_blank">
+<div class="avatar"></div>
+<div class="card-name">Alfenas</div>
+<div class="card-location">Local do encontro (a preencher)</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Araxá" data-name="Araxá" href="https://www.instagram.com/pkmgoaraxamg/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Araxá" data-img="araxa.jpg"/></div>
+<div class="card-name">Araxá</div>
+<div class="card-location">Parque do Cristo</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Boa Esperança" data-name="Boa Esperança" href="https://www.instagram.com/pogoboaesperancamg" rel="noopener" target="_blank">
+<div class="avatar"></div>
+<div class="card-name">Boa Esperança</div>
+<div class="card-location">Local do encontro (a preencher)</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Belo Horizonte" data-name="Belo Horizonte" href="http://www.instagram.com/bhpokegoliba" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Belo Horizonte" data-img="liba_bh.jpg"/></div>
+<div class="card-name">Belo Horizonte</div>
+<div class="card-location">Praça da Liberdade</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Contagem / Eldorado" data-name="Contagem / Eldorado" href="https://instagram.com/pokemongoeldorado" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Contagem / Eldorado" data-img="eldorado_contagem.jpg"/></div>
+<div class="card-name">Contagem</div>
+<div class="card-location">CSU Eldorado</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Itabirito" data-name="Itabirito" href="https://instagram.com/" rel="noopener" target="_blank">
+<div class="avatar"></div>
+<div class="card-name">Itabirito</div>
+<div class="card-location">Praça do Centenário</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Juiz de Fora" data-name="Juiz de Fora" href="https://instagram.com/pkmngojf" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Juiz de Fora" data-img="juiz_fora.jpg"/></div>
+<div class="card-name">Juiz de Fora</div>
+<div class="card-location">Universidade Federal de Juiz de Fora</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Sete Lagoas" data-name="Sete Lagoas" href="https://instagram.com/c_pokego7lagoas" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Sete Lagoas" data-img="sete_lagoas.jpg"/></div>
+<div class="card-name">Sete Lagoas</div>
+<div class="card-location">Praça da Feirinha</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Ipatinga" data-name="Ipatinga" href="https://instagram.com/pokemonvda" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Ipatinga" data-img="vale_aco.jpg"/></div>
+<div class="card-name">Ipatinga</div>
+<div class="card-location">Shopping Vale do Aço</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Uberlândia" data-name="Uberlândia" href="https://www.instagram.com/pokegoudia/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Uberlândia" data-img="uberlandia.jpg"/></div>
+<div class="card-name">Uberlândia</div>
+<div class="card-location">Parque do Sabiá</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Vespasiano" data-name="Vespasiano" href="https://www.instagram.com/pogovespasiano/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Vespasiano" data-img="vespasiano.jpg"/></div>
+<div class="card-name">Vespasiano</div>
+<div class="card-location">Praça de Esportes Crispim Jaques Bias Fortes</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Viçosa" data-name="Viçosa" href="https://www.instagram.com/pogo_vicosa/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Viçosa" data-img="vicosa.jpg"/></div>
+<div class="card-name">Viçosa</div>
+<div class="card-location">Universidade Federal de Viçosa</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+</div>
+</section>
+<!-- PARÁ -->
+<section class="state-section" data-state="Pará">
+<h2 class="state-title"><span class="uf">PA</span> Pará</h2>
+<div class="cards-grid">
+<a class="card" data-city="Belém" data-name="Belém" href="https://instagram.com/pogo.pa" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Belém" data-img="para.jpg"/></div>
+<div class="card-name">Belém</div>
+<div class="card-location">Estação das Docas</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+</div>
+</section>
+<!-- PARAÍBA -->
+<section class="state-section" data-state="Paraíba">
+<h2 class="state-title"><span class="uf">PB</span> Paraíba</h2>
+<div class="cards-grid">
+<a class="card" data-city="Campina Grande" data-name="Campina Grande" href="https://www.instagram.com/pogo.campinagrande" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Campina Grande" data-img="campina_grande.jpg"/></div>
+<div class="card-name">Campina Grande</div>
+<div class="card-location">Praça do Rosário</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="João Pessoa" data-name="João Pessoa" href="https://instagram.com/pokegojampa" rel="noopener" target="_blank">
+<div class="avatar"><img alt="João Pessoa" data-img="joao_pessoa.jpg"/></div>
+<div class="card-name">João Pessoa</div>
+<div class="card-location">Praça CCHÇ, UFPB)</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+</div>
+</section>
+<!-- PARANÁ -->
+<section class="state-section" data-state="Paraná">
+<h2 class="state-title"><span class="uf">PR</span> Paraná</h2>
+<div class="cards-grid">
+<a class="card" data-city="Curitiba" data-name="Curitiba" href="https://www.instagram.com/pkmgocwb" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Curitiba" data-img="curitiba.jpg"/></div>
+<div class="card-name">Curitiba</div>
+<div class="card-location">Passeio Público</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Londrina" data-name="Londrina" href="https://www.instagram.com/pokegolondrina" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Londrina" data-img="londrina.jpg"/></div>
+<div class="card-name">Londrina</div>
+<div class="card-location">Praça Marechal Floriano Peixoto</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Maringá" data-name="Maringá" href="https://instagram.com/ligamaringa" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Maringá" data-img="maringa.jpg"/></div>
+<div class="card-name">Maringá</div>
+<div class="card-location">Universidade Estadual de Maringá (UEM)</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+</div>
+</section>
+<!-- PERNAMBUCO -->
+<section class="state-section" data-state="Pernambuco">
+<h2 class="state-title"><span class="uf">PE</span> Pernambuco</h2>
+<div class="cards-grid">
+<a class="card" data-city="Cabo de Santo Agostinho" data-name="Cabo de Santo Agostinho" href="https://instagram.com/pokemongo.cabo" rel="noopener" target="_blank">
+<div class="avatar"></div>
+<div class="card-name">Cabo de Santo Agostinho</div>
+<div class="card-location">Shopping Costa Dourada</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Petrolina" data-name="Petrolina" href="https://instagram.com/pogopetrolina" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Petrolina" data-img="petrolina.jpg"/></div>
+<div class="card-name">Petrolina</div>
+<div class="card-location">Parque Municipal Josepha Coelho</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Recife" data-name="Recife" href="https://www.instagram.com/pokemongorecifepresenciais/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Recife" data-img="recife.jpg"/></div>
+<div class="card-name">Recife</div>
+<div class="card-location">Parque da Jaqueira</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+</div>
+</section>
+<!-- PIAUÍ -->
+<section class="state-section" data-state="Piauí">
+<h2 class="state-title"><span class="uf">PI</span> Piauí</h2>
+<div class="cards-grid">
+<a class="card" data-city="Teresina" data-name="Teresina" href="https://www.instagram.com/pokegocajuina/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Teresina" data-img="teresina.jpg"/></div>
+<div class="card-name">Teresina</div>
+<div class="card-location">Teresina Shopping</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+</div>
+</section>
+<!-- RIO DE JANEIRO -->
+<section class="state-section" data-state="Rio de Janeiro">
+<h2 class="state-title"><span class="uf">RJ</span> Rio de Janeiro</h2>
+<div class="cards-grid">
+<a class="card" data-city="Angra dos Reis" data-name="Angra dos Reis" href="https://instagram.com/angrapogo" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Angra dos Reis" data-img="angra.jpg"/></div>
+<div class="card-name">Angra dos Reis</div>
+<div class="card-location">Shopping Piratas</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Bom Jardim" data-name="Bom Jardim" href="https://www.instagram.com/pokemongoparquemunicipalbj/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Bom Jardim" data-img="bom_jardim.jpg"/></div>
+<div class="card-name">Bom Jardim</div>
+<div class="card-location">Parque Municipal Homero Lopes de Almeida</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Duque de Caxias" data-name="Duque de Caxias" href="https://www.instagram.com/pokegocaxias/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Duque de Caxias" data-img="duque_caxias.jpg"/></div>
+<div class="card-name">Duque de Caxias</div>
+<div class="card-location">Caxias Shopping</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Itaboraí" data-name="Itaboraí" href="https://www.instagram.com/" rel="noopener" target="_blank">
+<div class="avatar"></div>
+<div class="card-name">Itaboraí</div>
+<div class="card-location">Praça Marechal Floriano Peixoto</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Maricá" data-name="Maricá" href="https://www.instagram.com/pokemongomarica/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Maricá" data-img="marica.jpg"/></div>
+<div class="card-name">Maricá</div>
+<div class="card-location">Praça do Barroco</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Niterói" data-name="Niterói" href="http://www.instagram.com/pogoniteroi" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Niterói" data-img="niteroi.jpg"/></div>
+<div class="card-name">Niterói</div>
+<div class="card-location">Campo de São Bento / Shopping Itaipu Multicenter</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Nova Iguaçu" data-name="Nova Iguaçu" href="https://instagram.com/pogo_novaiguacu" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Nova Iguaçu" data-img="nova_iguacu.jpg"/></div>
+<div class="card-name">Nova Iguaçu</div>
+<div class="card-location">Shopping Nova Iguaçu</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Petrópolis" data-name="Petrópolis" href="https://www.instagram.com/petropolispogo/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Petrópolis" data-img="petropolis.jpg"/></div>
+<div class="card-name">Petrópolis</div>
+<div class="card-location">Praça da Liberdade</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Rio de Janeiro" data-name="Rio de Janeiro" href="https://instagram.com/pogoriodejaneiro" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Rio de Janeiro" data-img="rio_janeiro.jpg"/></div>
+<div class="card-name">Rio de Janeiro</div>
+<div class="card-location">Quinta da Boa Vista</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Rio de Janeiro (Bangu)" data-name="Rio de Janeiro (Bangu)" href="https://www.instagram.com/pogobangu/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Rio de Janeiro (Barra da Tijuca)" data-img="bangu.jpg"/></div>
+<div class="card-name">Rio de Janeiro (Bangu)</div>
+<div class="card-location">Shopping Bangu</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Rio de Janeiro (Barra da Tijuca)" data-name="Rio de Janeiro (Barra da Tijuca)" href="https://www.instagram.com/cabecagamesdalinda/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Rio de Janeiro (Barra da Tijuca)" data-img="barra_tijuca.jpg"/></div>
+<div class="card-name">Rio de Janeiro (Barra da Tijuca)</div>
+<div class="card-location">Barra World Shopping & Park</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Rio de Janeiro (Condomínio Rio 2 e Região)" data-name="Rio de Janeiro (Condomínio Rio 2 e Região)" href="https://www.instagram.com/rio.2go/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Rio de Janeiro (Condomínio Rio 2 e Região)" data-img="rio2.jpg"/></div>
+<div class="card-name">Rio de Janeiro (Condomínio Rio 2 e Região)</div>
+<div class="card-location">Condomínio Rio 2</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Rio de Janeiro (Ilha do Governador)" data-name="Rio de Janeiro (Ilha do Governador)" href="https://www.instagram.com/pokegoilha/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Rio de Janeiro (Ilha do Governador)" data-img="ilha_governador.jpg"/></div>
+<div class="card-name">Rio de Janeiro (Ilha do Governador)</div>
+<div class="card-location">Corredor Esportivo</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Rio de Janeiro (Nova América)" data-name="Rio de Janeiro (Nova América)" href="https://www.instagram.com/novaamericagorj/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Rio de Janeiro (Nova América)" data-img="rio_janeiro_nova_america.jpg"/></div>
+<div class="card-name">Rio de Janeiro (Nova América)</div>
+<div class="card-location">Shopping Nova América</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Teresópolis" data-name="Teresópolis" href="https://www.instagram.com/" rel="noopener" target="_blank">
+<div class="avatar"></div>
+<div class="card-name">Teresópolis</div>
+<div class="card-location">Praça Baltazhar da Silveira</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+</div>
+</section>
+<!-- RIO GRANDE DO NORTE -->
+<section class="state-section" data-state="Rio Grande do Norte">
+<h2 class="state-title"><span class="uf">RN</span> Rio Grande do Norte</h2>
+<div class="cards-grid">
+<a class="card" data-city="Natal" data-name="Natal" href="https://instagram.com/pogonatal" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Natal" data-img="natal.jpg"/></div>
+<div class="card-name">Natal</div>
+<div class="card-location">UFRN - Setor 2/CCHLA</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+</div>
+</section>
+<!-- RIO GRANDE DO SUL -->
+<section class="state-section" data-state="Rio Grande do Sul">
+<h2 class="state-title"><span class="uf">RS</span> Rio Grande do Sul</h2>
+<div class="cards-grid">
+<a class="card" data-city="Bento Gonçalves" data-name="Bento Gonçalves" href="http://www.instagram.com/" rel="noopener" target="_blank">
+<div class="avatar"></div>
+<div class="card-name">Bento Gonçalves</div>
+<div class="card-location">Bento Gonçalves</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Lajeado" data-name="Lajeado" href="https://www.instagram.com/lajeadogo/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Lajeado" data-img="lajeado.jpg"/></div>
+<div class="card-name">Lajeado</div>
+<div class="card-location">Parque dos Dick</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Novo Hamburgo" data-name="Novo Hamburgo" href="https://www.instagram.com" rel="noopener" target="_blank">
+<div class="avatar"></div>
+<div class="card-name">Novo Hamburgo</div>
+<div class="card-location">Praça Punta del Este</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Porto Alegre" data-name="Porto Alegre" href="http://www.instagram.com/poakemongo" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Porto Alegre" data-img="porto_alegre.jpg"/></div>
+<div class="card-name">Porto Alegre</div>
+<div class="card-location">Parque Farroupilha (Redenção)</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Rio Grande" data-name="Rio Grande" href="https://www.instagram.com/goriogrande/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Rio Grande" data-img="rio_grande.jpg"/></div>
+<div class="card-name">Rio Grande</div>
+<div class="card-location">Praça Tamandaré / Chapéu de Palha</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Santa Maria" data-name="Santa Maria" href="http://instagram.com/treinadores_sm" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Santa Maria" data-img="santa_maria.jpg"/></div>
+<div class="card-name">Santa Maria</div>
+<div class="card-location">Praça Saldanha Marinho</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+</div>
+</section>
+<!-- RORAIMA -->
+<section class="state-section" data-state="Roraima">
+<h2 class="state-title"><span class="uf">RR</span> Roraima</h2>
+<div class="cards-grid">
+<a class="card" data-city="Boa Vista" data-name="Boa Vista" href="https://www.instagram.com/macuxipokemongo/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Boa Vista" data-img="boa_vista.jpg"/></div>
+<div class="card-name">Boa Vista</div>
+<div class="card-location">Praça da Pirâmide</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+</div>
+</section>
+<!-- SANTA CATARINA -->
+<section class="state-section" data-state="Santa Catarina">
+<h2 class="state-title"><span class="uf">SC</span> Santa Catarina</h2>
+<div class="cards-grid">
+<a class="card" data-city="Balneário Camboriú" data-name="Balneário Camboriú" href="https://instagram.com/" rel="noopener" target="_blank">
+<div class="avatar"></div>
+<div class="card-name">Balneário Camboriú</div>
+<div class="card-location">Praça dos Dogs</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Corupá" data-name="Corupá" href="https://instagram.com/pogo.corupasc" rel="noopener" target="_blank">
+<div class="avatar"></div>
+<div class="card-name">Corupá</div>
+<div class="card-location">Local do encontro (a preencher)</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Florianópolis / Grande Florianópolis" data-name="Florianópolis / Grande Florianópolis" href="https://www.instagram.com/pogograndefloripa" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Florianópolis / Grande Florianópolis" data-img="florianopolis.jpg"/></div>
+<div class="card-name">Florianópolis / Grande Florianópolis</div>
+<div class="card-location">Beira-mar de São José</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Itajaí" data-name="Itajaí" href="https://www.instagram.com/pokemongoitajaisc/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Itajaí" data-img="itajai.jpg"/></div>
+<div class="card-name">Itajaí</div>
+<div class="card-location">Praça Vida Ramos (Igrejinha Velha)</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Joinvile" data-name="Joinvile" href="https://www.instagram.com/pokemongo_joinville/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Joinvile" data-img="joinvile.jpg"/></div>
+<div class="card-name">Joinvile</div>
+<div class="card-location">Centreventos Cau Hansen</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="São Bento do Sul" data-name="São Bento do Sul" href="https://www.instagram.com/" rel="noopener" target="_blank">
+<div class="avatar"></div>
+<div class="card-name">São Bento do Sul</div>
+<div class="card-location">Parque 23 de Setembro</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="São José" data-name="São José" href="https://www.instagram.com/" rel="noopener" target="_blank">
+<div class="avatar"></div>
+<div class="card-name">São José</div>
+<div class="card-location">Beira Mar de São José / Taberna dos Heróis</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Timbó" data-name="Timbó" href="https://www.instagram.com/pogo.timbo" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Timbó" data-img="timbo.jpg"/></div>
+<div class="card-name">Timbó</div>
+<div class="card-location">Pavilhão de Eventos Henry Paul</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Tubarão" data-name="Tubarão" href="https://www.instagram.com/pokemongotubaraosc/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Tubarão" data-img="tubarao.jpg"/></div>
+<div class="card-name">Tubarão</div>
+<div class="card-location">Unisul</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+</div>
+</section>
+<!-- SÃO PAULO -->
+<section class="state-section" data-state="São Paulo">
+<h2 class="state-title"><span class="uf">SP</span> São Paulo</h2>
+<div class="cards-grid">
+<a class="card" data-city="ABC Paulista - Santo André" data-name="ABC Paulista - Santo André" href="https://www.instagram.com/pogostoandre" rel="noopener" target="_blank">
+<div class="avatar"><img alt="ABC Paulista - Santo André" data-img="santo_andre.jpg"/></div>
+<div class="card-name">ABC Paulista - Santo André</div>
+<div class="card-location">Parque Central</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="ABC Paulista - São Bernardo do Campo" data-name="ABC Paulista - São Bernardo do Campo" href="https://www.instagram.com/pogosbc" rel="noopener" target="_blank">
+<div class="avatar"><img alt="ABC Paulista - São Bernardo do Campo" data-img="sao_bernado_campo.jpg"/></div>
+<div class="card-name">ABC Paulista - São Bernardo do Campo</div>
+<div class="card-location">Parque da Juventude Città Di Maróstica</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="ABC Paulista - São Caetano do Sul" data-name="ABC Paulista - São Caetano do Sul" href="https://www.instagram.com/pogosanca/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="ABC Paulista - São Caetano do Sul" data-img="sao_caetano.jpg"/></div>
+<div class="card-name">ABC Paulista - São Caetano do Sul</div>
+<div class="card-location">Espaço Verde Chico Mendes / ParkShopping São Caetano</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Amparo" data-name="Amparo" href="https://instagram.com/pokego_amparo" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Amparo" data-img="amparo.jpg"/></div>
+<div class="card-name">Amparo</div>
+<div class="card-location">Jardim Público Municipal</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Araraquara" data-name="Araraquara" href="https://www.instagram.com/pogoararaquara/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Araraquara" data-img="araraquara.jpg"/></div>
+<div class="card-name">Araraquara</div>
+<div class="card-location">Parque Infantil</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Bragança Paulista" data-name="Bragança Paulista" href="https://www.instagram.com/alerta_bp" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Bragança Paulista" data-img="braganca_paulista.jpg"/></div>
+<div class="card-name">Bragança Paulista</div>
+<div class="card-location">Parque Luiz Gonzaga da Silva Leme - Jardim Público</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Barueri" data-name="Barueri" href="https://instagram.com/" rel="noopener" target="_blank">
+<div class="avatar"></div>
+<div class="card-name">Barueri</div>
+<div class="card-location">Parque Municipal Dom José</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Campinas" data-name="Campinas" href="https://www.instagram.com/gocampinasoficial/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Campinas" data-img="campinas.jpg"/></div>
+<div class="card-name">Campinas</div>
+<div class="card-location">Praça Imprensa Fluminense</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Indaiatuba" data-name="Indaiatuba" href="https://www.instagram.com/pogoindaiatuba/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Indaiatuba" data-img="indaiatuba.jpg"/></div>
+<div class="card-name">Indaiatuba </div>
+<div class="card-location">Chafariz do Parque Ecológico</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Itu" data-name="Itu" href="https://www.instagram.com/pogoitu/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Itu" data-img="itu.jpg"/></div>
+<div class="card-name">Itu </div>
+<div class="card-location">Praça da Independência</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Jacareí" data-name="Jacareí" href=" https://www.instagram.com/pokemongojacarei/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Jacareí" data-img="jacarei.jpg"/></div>
+<div class="card-name">Jacareí </div>
+<div class="card-location">Praça da Cidade de Jacareí</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Jundiaí" data-name="Jundiaí" href="https://www.instagram.com/jund.go/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Jundiaí" data-img="jundiai.jpg"/></div>
+<div class="card-name">Jundiaí</div>
+<div class="card-location">Jardim Botânico de Jundiaí</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Leme" data-name="Leme" href="https://www.instagram.com/" rel="noopener" target="_blank">
+<div class="avatar"></div>
+<div class="card-name">Leme</div>
+<div class="card-location">Parque Municipal Dr. Enni J. Draib</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Marília" data-name="Marília" href="https://www.instagram.com/pokemongomarilia/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Marília" data-img="marilia.jpg"/></div>
+<div class="card-name">Marília</div>
+<div class="card-location">Museu da Paleontologia</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Mogi das Cruzes" data-name="Mogi das Cruzes" href="https://instagram.com/pogomogidascruzes" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Mogi das Cruzes" data-img="mogi_cruzes.jpg"/></div>
+<div class="card-name">Mogi das Cruzes</div>
+<div class="card-location">Parque Centenário</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Piracicaba" data-name="Piracicaba" href="https://instagram.com/pokemonpiracicaba" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Piracicaba" data-img="piracicaba.jpg"/></div>
+<div class="card-name">Piracicaba</div>
+<div class="card-location">Engenho Central de Piracicapa</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Piraju" data-name="Piraju" href="https://instagram.com/pirapokemon" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Piraju" data-img="piraju.jpg"/></div>
+<div class="card-name">Piraju</div>
+<div class="card-location">Praça Ataliba Leonal / Igreja Matriz</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Praia Grande" data-name="Praia Grande" href="https://instagram.com/" rel="noopener" target="_blank">
+<div class="avatar"></div>
+<div class="card-name">Praia Grande</div>
+<div class="card-location">Litoral Plaza Shopping</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Ribeirão Preto" data-name="Ribeirão Preto" href="https://www.instagram.com/pokemongoribeiraopreto/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Ribeirão Preto" data-img="ribeirao_preto.jpg"/></div>
+<div class="card-name">Ribeirão Preto</div>
+<div class="card-location">Parque da Represa Municipal</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Rio Claro" data-name="Rio Claro" href="https://www.instagram.com/pogo.rioclaro" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Rio Claro" data-img="rio_claro.jpg"/></div>
+<div class="card-name">Rio Claro</div>
+<div class="card-location">Lago Azul</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Salto" data-name="Salto" href="https://instagram.com/pogosalto" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Salto" data-img="salto.jpg"/></div>
+<div class="card-name">Salto</div>
+<div class="card-location">Praça Antônio Vieira Tavares</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Santos" data-name="Santos" href="https://instagram.com/pokemongosantos" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Santos" data-img="santos.jpg"/></div>
+<div class="card-name">Santos</div>
+<div class="card-location">Quebra Mar</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="São José do Rio Preto" data-name="São José do Rio Preto" href="https://instagram.com/pokemon_riopreto" rel="noopener" target="_blank">
+<div class="avatar"><img alt="São José do Rio Preto" data-img="rio_preto.jpg"/></div>
+<div class="card-name">São José do Rio Preto</div>
+<div class="card-location">Parque Curupira</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="São José dos Campos" data-name="São José dos Campos" href=" https://www.instagram.com/santosdumontpark.go/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="São José dos Campos" data-img="sao_jose_campos.jpg"/></div>
+<div class="card-name">São José dos Campos</div>
+<div class="card-location">Parque Santos Dumont</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="São Paulo" data-name="São Paulo" href="https://instagram.com/pokemongosampa" rel="noopener" target="_blank">
+<div class="avatar"><img alt="São Paulo" data-img="sao_paulo.jpg"/></div>
+<div class="card-name">São Paulo</div>
+<div class="card-location">OCA-MAM - Parque Ibirapuera / Praça Dois Corações</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+
+<a class="card" data-city="São Paulo (Parque Ceret)" data-name="São Paulo (Parque Ceret)" href="https://www.instagram.com/pokego.ceret/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="São Paulo" data-img="sao_paulo_ceret.jpg"/></div>
+<div class="card-name">São Paulo (Parque Ceret)</div>
+<div class="card-location">Parque Ceret</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+
+<a class="card" data-city="São Paulo" data-name="Parque Buenos Aires" href="https://www.instagram.com/pqbuenosaires.sp" rel="noopener" target="_blank">
+<div class="avatar"><img alt="São Paulo II (Pq. Buenos Aires)" data-img="sao_paulo_buenos_aires.jpg"/></div>
+<div class="card-name">São Paulo II (Pq. Buenos Aires)</div>
+<div class="card-location">Parque Buenos Aires</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Sorocaba" data-name="Sorocaba" href="https://www.instagram.com/sorocaba_go" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Sorocaba" data-img="sorocaba.jpg"/></div>
+<div class="card-name">Sorocaba</div>
+<div class="card-location">Parque da Água Vermelha / Shopping Cianê</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Suzano" data-name="Suzano" href="https://www.instagram.com/pokegosuzano/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Suzano" data-img="suzano.jpg"/></div>
+<div class="card-name">Suzano</div>
+<div class="card-location">Praça Expedicionário Antônio Garcia</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Ubatuba" data-name="Ubatuba" href="https://instagram.com/poke_ubatubense" rel="noopener" target="_blank">
+<div class="avatar"></div>
+<div class="card-name">Ubatuba</div>
+<div class="card-location">Local do encontro (a preencher)</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+</div>
+</section>
+<!-- SERGIPE -->
+<section class="state-section" data-state="Sergipe">
+<h2 class="state-title"><span class="uf">SE</span> Sergipe</h2>
+<div class="cards-grid">
+<a class="card" data-city="Aracaju" data-name="Aracaju" href="https://www.instagram.com/aracaju.go" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Aracaju" data-img="aracaju.jpg"/></div>
+<div class="card-name">Aracaju</div>
+<div class="card-location">Parque da Sementeira</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+<a class="card" data-city="Barra dos Coqueiros" data-name="Barra dos Coqueiros" href="https://www.instagram.com/pokgobarra/" rel="noopener" target="_blank">
+<div class="avatar"><img alt="Barra dos Coqueiros" data-img="barra_coqueiros.jpg"/></div>
+<div class="card-name">Barra dos Coqueiros</div>
+<div class="card-location">Praça de Eventos Ana do Forró</div>
+<div class="card-link">📷 Instagram</div>
+</a>
+</div>
+</section>
+</div>
+<div class="no-results" id="noResults">
+      Nenhuma comunidade encontrada para essa busca.
+    </div>
+</main>
+<footer>
+    Feito por <strong>YouTuber Mestre Yodoh</strong> · 
+    <a href="https://www.youtube.com/@MestreYodoh" rel="noopener" target="_blank">Canal no YouTube</a>
+</footer>
+<script>
+    // Prefixo constante para imagens (todas começam com pokemongo_)
+    const IMAGE_PREFIX = 'img/pokemongo_';
+
+    // Carrega as imagens usando a constante (facilita manutenção)
+    document.querySelectorAll('img[data-img]').forEach(img => {
+      img.src = IMAGE_PREFIX + img.dataset.img;
+    });
+
+
+    // Tema
+    const themeToggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+
+    function setTheme(theme) {
+      html.setAttribute('data-theme', theme);
+      themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem('theme', theme);
+    }
+
+    const saved = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    setTheme(saved);
+
+    themeToggle.addEventListener('click', () => {
+      const current = html.getAttribute('data-theme');
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    });
+
+    // Busca
+    const searchInput = document.getElementById('search');
+    const cards = document.querySelectorAll('.card');
+    const sections = document.querySelectorAll('.state-section');
+    const noResults = document.getElementById('noResults');
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      let anyVisible = false;
+
+      cards.forEach(card => {
+        const name = (card.dataset.name || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const city = (card.dataset.city || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const text = (card.textContent || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const match = !query || name.includes(query) || city.includes(query) || text.includes(query);
+        card.classList.toggle('hidden', !match);
+        if (match) anyVisible = true;
+      });
+
+      sections.forEach(section => {
+        const visibleCards = section.querySelectorAll('.card:not(.hidden)');
+        section.classList.toggle('hidden', visibleCards.length === 0);
+      });
+
+      noResults.classList.toggle('show', !anyVisible && query.length > 0);
+    });
+
+    // Transição ao voltar para o Hub
+    const overlay = document.getElementById('pageTransition');
+    const homeLink = document.getElementById('homeLink');
+    if (homeLink && overlay) {
+      homeLink.addEventListener('click', (e) => {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
+        e.preventDefault();
+        overlay.classList.add('active');
+        overlay.setAttribute('aria-hidden', 'false');
+        setTimeout(() => {
+          window.location.href = homeLink.getAttribute('href');
+        }, 380);
+      });
+    }
+  </script>
+</body>
+</html>

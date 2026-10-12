@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Todas as fantasias do Pikachu. Catálogo completo das roupas, chapéus e visuais especiais do Pikachu em Pokémon GO organizados por raridade.">
+<meta property="og:image" content="https://pikachu-fantasias-yodoh.htmly.com.br/pikachu_logo_yodoh.png" />
+<title>Pikachu - Galeria de Fantasias</title>
+<link rel="icon" href="../assets/PERFIL_BALL_OK.png" type="image/png">
+<link rel="apple-touch-icon" href="../assets/PERFIL_BALL_OK.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="sprites-data.js"></script>
+
+<style>
+  :root{
+    --yellow:#ffcb05; --yellow-deep:#f2a900; --blue:#2a75bb; --red:#ee2738; --ink:#151426;
+    --bg:#0d0c17; --bg-alt:#161425; --card-bg:#1d1b30; --card-border:#332f52;
+    --text:#f4f1ff; --text-dim:#a9a3c9; --shadow: 0 20px 45px rgba(0,0,0,.5);
+    --selected-bg: rgba(238,39,56,.18); --selected-border: #ee2738;
+  }
+  [data-theme="light"]{
+    --bg:#fbf7e9; --bg-alt:#fff9e6; --card-bg:#ffffff; --card-border:#e9dfb8;
+    --text:#1d1a2e; --text-dim:#6b6484; --shadow: 0 16px 34px rgba(60,45,10,.14);
+    --selected-bg: rgba(238,39,56,.12); --selected-border: #ee2738;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; font-family:'Inter',sans-serif;
+    background: radial-gradient(circle at 15% 0%, rgba(255,203,5,.08), transparent 45%),
+      radial-gradient(circle at 85% 10%, rgba(42,117,187,.10), transparent 40%), var(--bg);
+    color:var(--text); transition:background .4s ease,color .4s ease; min-height:100vh;
+    padding-bottom: 90px;
+    opacity:0; animation:pageFadeIn .4s ease forwards;
+  }
+  @keyframes pageFadeIn{ from{opacity:0} to{opacity:1} }
+  .page-transition{
+    position:fixed; inset:0; z-index:9999; background:var(--bg);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1rem;
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .35s ease, visibility .35s ease;
+  }
+  .page-transition.active{ opacity:1; visibility:visible; pointer-events:auto; }
+  .page-transition .spinner{
+    width:36px; height:36px; border:3px solid var(--card-border);
+    border-top-color:var(--yellow); border-radius:50%;
+    animation:spin .7s linear infinite;
+  }
+  .page-transition .loading-text{ font-size:.85rem; font-weight:500; color:var(--text-dim); }
+  @keyframes spin{ to{ transform:rotate(360deg) } }
+  header{ position:relative; padding:72px 6vw 56px; overflow:hidden; border-bottom:1px solid var(--card-border); }
+  .bolt-bg{ position:absolute; inset:0; opacity:.5; pointer-events:none;
+    background-image: repeating-linear-gradient(115deg, rgba(255,203,5,.05) 0 2px, transparent 2px 90px); }
+  .eyebrow{ font-family:'JetBrains Mono',monospace; letter-spacing:.22em; text-transform:uppercase;
+    font-size:12px; color:var(--yellow-deep); font-weight:700; display:flex; align-items:center; gap:10px; }
+  .eyebrow::before{content:"⚡"; font-size:14px;}
+  h1{ font-family:'Baloo 2',sans-serif; font-weight:800; font-size:clamp(38px,6vw,74px);
+    line-height:.98; margin:14px 0 18px; letter-spacing:-.01em; }
+  h1 span{ background:linear-gradient(100deg,var(--yellow) 10%,var(--yellow-deep) 55%, var(--red) 110%);
+    -webkit-background-clip:text; background-clip:text; color:transparent; }
+  header p.lede{ max-width:640px; color:var(--text-dim); font-size:16px; line-height:1.6; margin:0 0 30px; }
+  .stats{ display:flex; gap:28px; flex-wrap:wrap; margin-bottom:8px;}
+  .stat{font-family:'JetBrains Mono',monospace;}
+  .stat b{display:block; font-size:26px; color:var(--text); font-family:'Baloo 2',sans-serif;}
+  .stat span{font-size:11px; text-transform:uppercase; letter-spacing:.14em; color:var(--text-dim);}
+  .home-btn{ position:fixed; top:22px; left:22px; z-index:50; display:inline-flex; align-items:center; gap:8px;
+    background:var(--card-bg); border:1px solid var(--card-border); padding:8px 14px; border-radius:999px; box-shadow:var(--shadow);
+    color:var(--text); text-decoration:none; font-size:13px; font-weight:600; transition:border-color .2s, transform .2s; }
+  .home-btn:hover{ border-color:var(--yellow-deep); transform:scale(1.04); }
+  .toggle-wrap{ position:fixed; top:22px; right:22px; z-index:50; display:flex; align-items:center; gap:10px;
+    background:var(--card-bg); border:1px solid var(--card-border); padding:8px 14px 8px 10px; border-radius:999px; box-shadow:var(--shadow); }
+  .toggle-wrap .label{ font-size:12px; font-weight:600; color:var(--text-dim);}
+  #themeSwitch{ appearance:none; -webkit-appearance:none; width:46px; height:26px; border-radius:999px;
+    background:var(--ink); position:relative; cursor:pointer; outline:none; border:1px solid var(--card-border); transition:background .3s ease; }
+  #themeSwitch::before{ content:"⚡"; position:absolute; top:2px; left:2px; width:20px; height:20px; border-radius:50%;
+    background:var(--yellow); display:flex; align-items:center; justify-content:center; font-size:11px;
+    transition:transform .3s cubic-bezier(.5,-0.3,.2,1.4), background .3s ease; }
+  [data-theme="light"] #themeSwitch::before{ transform:translateX(20px); background:var(--red); }
+  .legend{ display:flex; flex-wrap:wrap; gap:10px; padding:22px 6vw; background:var(--bg-alt);
+    border-bottom:1px solid var(--card-border); position:sticky; top:0; z-index:20; backdrop-filter:blur(10px); }
+  .legend-item{ font-size:12px; font-weight:600; padding:6px 12px; border-radius:999px; display:flex;
+    align-items:center; gap:6px; border:1px solid var(--card-border); color:var(--text-dim); background:var(--card-bg); }
+  .dot{width:8px;height:8px;border-radius:50%;}
+  main{padding:10px 6vw 100px;}
+  .tier{ margin-top:64px; }
+  .tier-head{ display:flex; align-items:baseline; gap:16px; margin-bottom:22px;
+    padding-bottom:14px; border-bottom:2px dashed var(--card-border); }
+  .tier-index{ font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--text-dim); }
+  .tier-name{ font-family:'Baloo 2',sans-serif; font-weight:700; font-size:26px; }
+  .tier-desc{ font-size:13px; color:var(--text-dim); margin-left:auto; text-align:right; max-width:340px;}
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(168px,1fr)); gap:16px; }
+  .card{ position:relative; background:var(--card-bg); border:1px solid var(--card-border); border-radius:16px;
+    padding:16px 12px 14px; text-align:center; cursor:pointer; user-select:none;
+    transition:transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease, border-color .35s ease, background .25s ease; z-index:1; }
+  /* Zoom ao passar o mouse (desktop) ou pressionar (toque) — sem desfocar/escurecer o fundo */
+  @media (hover: hover) and (pointer: fine) {
+    .card:hover{
+      transform:translateY(-6px) scale(1.08);
+      box-shadow:var(--shadow);
+      border-color:var(--yellow-deep);
+      z-index:5;
+    }
+    .card.selected:hover{ border-color: var(--selected-border); }
+  }
+  .card:active{
+    transform:scale(1.05);
+    z-index:5;
+  }
+  .card.selected{
+    background: var(--selected-bg);
+    border-color: var(--selected-border);
+    box-shadow: 0 0 0 2px var(--selected-border), var(--shadow);
+  }
+  .card .check-mark{
+    position:absolute; top:6px; left:6px; z-index:4;
+    width:20px; height:20px; border-radius:50%; background:var(--red); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700;
+    line-height:1; opacity:0; transform:scale(0);
+    transition: transform .22s cubic-bezier(.2,.8,.2,1), opacity .22s ease;
+    pointer-events:none; box-shadow:0 2px 6px rgba(238,39,56,.4);
+  }
+  .card.selected .check-mark{ transform:scale(1); opacity:1; }
+  .num{ position:absolute; top:8px; left:10px; font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-dim); opacity:.7;
+    transition: opacity .2s; }
+  .card.selected .num{ opacity:0; }
+  .rare-badge{ position:absolute; top:8px; right:8px; width:8px;height:8px;border-radius:50%; }
+  .icon-wrap{ width:96px; height:96px; margin:14px auto 10px; display:flex; align-items:center; justify-content:center; position:relative; }
+  .icon-wrap img{ width:88px; height:88px; object-fit:contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,.25)); transition: opacity .25s; }
+  .card.selected .icon-wrap img{ opacity: .85; }
+  .card h3{ font-family:'Baloo 2',sans-serif; font-size:14.5px; font-weight:700; margin:2px 0 2px; line-height:1.2; }
+  .card .en{ font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-dim); }
+
+  /* Barra de seleção fixa */
+  .selection-bar{
+    position:fixed; bottom:0; left:0; right:0; z-index:40;
+    background:var(--card-bg); border-top:1px solid var(--card-border);
+    box-shadow: 0 -8px 30px rgba(0,0,0,.25);
+    /* padding-right extra para não colidir com selo de hospedagem gratuita */
+    padding:12px 6vw 16px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+    justify-content:flex-start;
+    transform: translateY(110%); transition: transform .35s cubic-bezier(.2,.8,.2,1);
+  }
+  .selection-bar.visible{ transform: translateY(0); }
+  .sel-count{ font-family:'Baloo 2',sans-serif; font-weight:700; font-size:18px; white-space:nowrap; }
+  .sel-count span{ color:var(--red); }
+  .sel-actions{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .btn{
+    font-family:'Inter',sans-serif; font-weight:600; font-size:13px; padding:10px 18px;
+    border-radius:999px; border:1px solid var(--card-border); cursor:pointer;
+    background:var(--bg-alt); color:var(--text);
+    transition: background .18s, transform .12s, border-color .18s, box-shadow .18s;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .btn:hover{ transform:translateY(-1px); border-color:var(--yellow-deep); }
+  .btn:active{
+    transform:translateY(1px) scale(0.96);
+    box-shadow: inset 0 2px 6px rgba(0,0,0,.18);
+  }
+  .btn-primary{ background:var(--yellow); color:#1a1400; border-color:var(--yellow-deep); }
+  .btn-primary:hover{ background:var(--yellow-deep); }
+  .btn-primary:active{ background:#e0a800; box-shadow: inset 0 2px 8px rgba(0,0,0,.2); }
+  .btn-danger{ background:transparent; color:var(--red); border-color:rgba(238,39,56,.4); }
+  .btn-danger:hover{ background:rgba(238,39,56,.12); border-color:var(--red); }
+  .btn-danger:active{ background:rgba(238,39,56,.2); }
+  .btn:disabled{ opacity:.65; cursor:wait; transform:none !important; box-shadow:none !important; }
+  .btn.success-flash{
+    background:#37c871 !important; color:#fff !important; border-color:#2da85e !important;
+  }
+
+  /* Modal */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:60;
+    display:flex; align-items:center; justify-content:center; padding:20px;
+    opacity:0; visibility:hidden; transition: opacity .25s, visibility .25s;
+  }
+  .modal-overlay.open{ opacity:1; visibility:visible; }
+  .modal{
+    background:var(--card-bg); border:1px solid var(--card-border); border-radius:20px;
+    max-width:520px; width:100%; max-height:85vh; overflow:hidden; display:flex; flex-direction:column;
+    box-shadow:var(--shadow); transform:scale(.94); transition:transform .25s cubic-bezier(.2,.8,.2,1);
+  }
+  .modal-overlay.open .modal{ transform:scale(1); }
+  .modal-header{ padding:20px 22px 12px; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .modal-header h2{ font-family:'Baloo 2',sans-serif; font-size:22px; margin:0; }
+  .modal-close{ background:none; border:none; color:var(--text-dim); font-size:24px; cursor:pointer; line-height:1; padding:4px 8px; border-radius:8px; }
+  .modal-close:hover{ background:var(--bg-alt); color:var(--text); }
+  .modal-body{ padding:0 22px 16px; overflow-y:auto; flex:1; }
+  .modal-body p{ color:var(--text-dim); font-size:14px; margin:0 0 14px; }
+  #listPreview{
+    background:var(--bg); border:1px solid var(--card-border); border-radius:12px;
+    padding:14px 16px; font-family:'JetBrains Mono',monospace; font-size:12.5px;
+    line-height:1.55; white-space:pre-wrap; word-break:break-word; max-height:340px; overflow-y:auto;
+    color:var(--text);
+  }
+  .modal-footer{ padding:14px 22px 20px; display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; border-top:1px solid var(--card-border); }
+
+  .hint{ font-size:13px; color:var(--text-dim); margin-top:8px; }
+  .hint strong{ color:var(--yellow-deep); }
+
+  footer{ padding:40px 6vw 60px; border-top:1px solid var(--card-border); color:var(--text-dim); font-size:13px; text-align:center; }
+  footer a{ color:var(--yellow-deep); text-decoration:none; font-weight:600;}
+  footer a:hover{ text-decoration:underline; }
+  @media (max-width:640px){
+    .tier-head{flex-wrap:wrap;} .tier-desc{ text-align:left; margin-left:0; }
+    .home-btn{ top:14px; left:14px; font-size:12px; padding:7px 12px; }
+    .toggle-wrap{ top:14px; right:14px; }
+    /* Espaço extra embaixo/direita para o selo da hospedagem gratuita */
+    .selection-bar{
+      padding:10px 12px 28px 12px;
+      gap:8px;
+      flex-direction:column;
+      align-items:stretch;
+    }
+    .sel-count{ font-size:15px; }
+    .sel-actions{
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      gap:8px;
+      width:100%;
+    }
+    .sel-actions .btn{
+      width:100%;
+      text-align:center;
+      padding:10px 8px;
+      font-size:12px;
+      justify-content:center;
+    }
+    .btn{ padding:9px 14px; font-size:12px; }
+  }
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
+</style>
+</head>
+<body>
+<div class="page-transition" id="pageTransition" aria-hidden="true">
+  <div class="spinner" aria-hidden="true"></div>
+  <span class="loading-text">Carregando…</span>
+</div>
+<a href="../index.html" class="home-btn" id="homeLink" title="Voltar ao Hub Mestre Yodoh">🏠 Hub</a>
+<div class="toggle-wrap">
+  <span class="label" id="modeLabel">Escuro</span>
+  <input type="checkbox" id="themeSwitch" aria-label="Alternar modo claro/escuro">
+</div>
+<header>
+  <div class="bolt-bg"></div>
+  <div class="eyebrow" id="eyebrowDate">Pokémon GO</div>
+  <h1>Todas as fantasias<br><span>do Pikachu</span></h1>
+  <p class="lede">Catálogo completo das roupas, chapéus e visuais especiais do Pikachu em Pokémon GO - nomes oficiais conforme levantamento GOCENTER, sprites do Dittobase, organizados por raridade.</p>
+  <div class="stats">
+    <div class="stat"><b id="countStat">94</b><span>Fantasias</span></div>
+    <div class="stat"><b>5</b><span>Níveis de raridade</span></div>
+    <div class="stat"><b id="missingStat">0</b><span>Faltando</span></div>
+  </div>
+  <p class="hint">Toque nos Pikachus que <strong>você ainda não tem</strong> para marcá-los. Depois gere a lista e mande para os amigos.</p>
+</header>
+<div class="legend" id="legend"></div>
+<main id="main"></main>
+<footer>
+  Nomes e referência visual: <strong>GOCENTER</strong>
+  (<a href="https://www.instagram.com/p/DbJ85mnjFLN/" target="_blank" rel="noopener">Instagram</a>).
+  Sprites: Dittobase. Página não-oficial de fã. Pokémon e Pikachu © Nintendo / Game Freak / The Pokémon Company.
+</footer>
+
+<!-- Barra de seleção -->
+<div class="selection-bar" id="selectionBar">
+  <div class="sel-count"><span id="selCount">0</span> faltando</div>
+  <div class="sel-actions">
+    <button type="button" class="btn btn-danger" id="btnClear" title="Apaga todas as marcações">Limpar tudo</button>
+    <button type="button" class="btn" id="btnPdf" title="Gera PDF com os sprites dos Pikachus marcados">Exportar PDF</button>
+    <button type="button" class="btn btn-primary" id="btnGenerate">Gerar lista</button>
+  </div>
+</div>
+
+<!-- Modal da lista -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" role="dialog" aria-labelledby="modalTitle">
+    <div class="modal-header">
+      <h2 id="modalTitle">Lista de faltantes</h2>
+      <button type="button" class="modal-close" id="modalClose" aria-label="Fechar">×</button>
+    </div>
+    <div class="modal-body">
+      <p>Copie o texto abaixo e envie para seus amigos. Eles podem te ajudar a completar a coleção!</p>
+      <div id="listPreview"></div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn" id="btnCloseModal">Fechar</button>
+      <button type="button" class="btn btn-primary" id="btnCopy">Copiar lista</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const meses = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+  const agora = new Date();
+  const el = document.getElementById("eyebrowDate");
+  if (el) el.textContent = "Pokémon GO · " + meses[agora.getMonth()] + " de " + agora.getFullYear();
+})();
+const TIERS = [
+  { id:1, name:"Comuns", desc:"Repetem quase todo ano; fáceis de conseguir.", color:"#37c871" },
+  { id:2, name:"Incomuns", desc:"Voltam em edições sazonais, mas somem por longos períodos.", color:"#3aa0e0" },
+  { id:3, name:"Raras", desc:"Promoções, colaborações ou hats de personagens de curta duração.", color:"#b06fe0" },
+  { id:4, name:"Muito Raras", desc:"Eventos globais únicos ou retornos muito raros.", color:"#ff8a3d" },
+  { id:5, name:"Extremamente Raras", desc:"Exclusivas de região, evento presencial, museu ou GBL.", color:"#ff3d5a" },
+];
+
+/* Mapeamento verificado visualmente vs imagens GOCENTER + arquivos Dittobase */
+const ITEMS = [
+  // TIER 1
+  {t:1, en:"Witch Hat", pt:"Chapéu de Bruxa", sprite:"halloween-2017"},
+  {t:1, en:"Santa Hat", pt:"Gorro de Papai Noel", sprite:"holiday-2016"},
+  {t:1, en:"Party Hat", pt:"Chapéu de Festa", sprite:"anniversary"},
+  {t:1, en:"Party Red Hat", pt:"Chapéu de Festa Vermelho", sprite:"jan-2020"},
+  {t:1, en:"Summer Hat", pt:"Chapéu de Verão", sprite:"summer-2018"},
+  {t:1, en:"Flower Crown", pt:"Coroa de Flores", sprite:"november-2018"},
+  // TIER 2
+  {t:2, en:"Beanie", pt:"Gorro", sprite:"winter-2018"},
+  {t:2, en:"Holiday", pt:"Festas (Holiday)", sprite:"winter-2020"},
+  {t:2, en:"Halloween", pt:"Halloween (Mimikyu)", sprite:"fall-2019"},
+  {t:2, en:"Halloween Hat", pt:"Chapéu de Halloween", sprite:"halloween-2021"},
+  {t:2, en:"Halloween 2023", pt:"Halloween 2023", sprite:"fall-2023"},
+  {t:2, en:"Holiday 2023", pt:"Festas 2023", sprite:"holiday-2023"},
+  {t:2, en:"Spring Hat", pt:"Chapéu de Primavera", sprite:"april-2020"},
+  {t:2, en:"New Year", pt:"Ano Novo", sprite:"costume-2"},
+  {t:2, en:"New Year's 2023", pt:"Ano Novo 2023", sprite:"jan-2023"},
+  {t:2, en:"Cake Hat", pt:"Chapéu de Bolo", sprite:"anniversary-2022"},
+  {t:2, en:"Cherry Blossom", pt:"Flor de Cerejeira", sprite:"spring-2023"},
+  {t:2, en:"Balloon", pt:"Balão", sprite:"costume-2020"},
+  // TIER 3
+  {t:3, en:"Ash Hat", pt:"Boné do Ash", sprite:"one-year-anniversary"},
+  {t:3, en:"World Cap", pt:"Boné do Mundial", sprite:"costume-1"},
+  {t:3, en:"Umbreon Hat", pt:"Chapéu de Umbreon", sprite:"johto-2020"},
+  {t:3, en:"Charizard Hat", pt:"Chapéu de Charizard", sprite:"kanto-2020"},
+  {t:3, en:"Lucario Hat", pt:"Chapéu de Lucario", sprite:"sinnoh-2020"},
+  {t:3, en:"Rayquaza Hat", pt:"Chapéu de Rayquaza", sprite:"hoenn-2020"},
+  {t:3, en:"Shaymin Scarf", pt:"Cachecol de Shaymin", sprite:"gofest-2022"},
+  {t:3, en:"Shaymin Flower", pt:"Flor de Shaymin", sprite:"gofest-2022-gracidea-flower"},
+  {t:3, en:"Meloetta Hat", pt:"Chapéu de Meloetta", sprite:"gofest-2021"},
+  {t:3, en:"Quartz Crown", pt:"Coroa de Quartzo", sprite:"summer-2023-a"},
+  {t:3, en:"Pyrite Crown", pt:"Coroa de Pirita", sprite:"summer-2023-b"},
+  {t:3, en:"Malachite Crown", pt:"Coroa de Malaquita", sprite:"summer-2023-c"},
+  {t:3, en:"Aquamarine Crown", pt:"Coroa de Água-marinha", sprite:"summer-2023-d"},
+  {t:3, en:"Amethyst Crown", pt:"Coroa de Ametista", sprite:"summer-2023-e"},
+  {t:3, en:"Sun Crown", pt:"Coroa do Sol", sprite:"gofest-2024-stiara"},
+  {t:3, en:"Moon Crown", pt:"Coroa da Lua", sprite:"gofest-2024-mtiara"},
+  {t:3, en:"Dapper Blue", pt:"Elegante Azul", sprite:"dapper-blue"},
+  {t:3, en:"Dapper Red", pt:"Elegante Vermelho", sprite:"dapper-red"},
+  {t:3, en:"Dapper Yellow", pt:"Elegante Amarelo", sprite:"dapper-yellow"},
+  {t:3, en:"Cap's Hat", pt:"Chapéu do Cap", sprite:"horizons"},
+  {t:3, en:"Brendan's Hat", pt:"Boné do Brendan", sprite:"gotour-2023-hat"},
+  {t:3, en:"May's Bow", pt:"Laço da May", sprite:"gotour-2023-bandana"},
+  {t:3, en:"Hilbert's Hat", pt:"Boné do Hilbert", sprite:"hilbert"},
+  {t:3, en:"Hilda's Hat", pt:"Boné da Hilda", sprite:"hilda"},
+  {t:3, en:"Nate's Visor", pt:"Viseira do Nate", sprite:"nate"},
+  {t:3, en:"Rosa's Visor", pt:"Viseira da Rosa", sprite:"rosa"},
+  {t:3, en:"Calem's Hat", pt:"Boné do Calem", sprite:"gotour-2026-calems-hat"},
+  {t:3, en:"Serena's Hat", pt:"Chapéu da Serena", sprite:"gotour-2026-serenas-hat"},
+  {t:3, en:"Red's Hat", pt:"Boné do Red", sprite:"reds-hat"},
+  {t:3, en:"Leaf's Hat", pt:"Chapéu da Leaf", sprite:"leafs-hat"},
+  {t:3, en:"Ethan's Hat", pt:"Boné do Ethan", sprite:"ethans-hat"},
+  {t:3, en:"Lyra's Hat", pt:"Chapéu da Lyra", sprite:"lyras-hat"},
+  {t:3, en:"Dawn's Hat", pt:"Boné da Dawn", sprite:"gotour-2024-a-02"},
+  {t:3, en:"Lucas's Hat", pt:"Boné do Lucas", sprite:"gotour-2024-a"},
+  {t:3, en:"Akari's Kerchief", pt:"Lenço da Akari", sprite:"gotour-2024-b-02"},
+  {t:3, en:"Rei's Cap", pt:"Boné do Rei", sprite:"gotour-2024-b"},
+  {t:3, en:"Marathon Visor", pt:"Viseira de Maratona", sprite:"visor-2026"},
+  {t:3, en:"Safari Hat", pt:"Chapéu Safári", sprite:"safari-2020"},
+  {t:3, en:"Team Mystic Cap", pt:"Boné Time Mystic", sprite:"gofest-2026-cap-blue"},
+  {t:3, en:"Team Instinct Cap", pt:"Boné Time Instinct", sprite:"gofest-2026-cap-yellow"},
+  {t:3, en:"Team Valor Cap", pt:"Boné Time Valor", sprite:"gofest-2026-cap-red"},
+  {t:3, en:"Detective Pikachu", pt:"Detetive Pikachu", sprite:"pi"},
+  {t:3, en:"5th Anniversary", pt:"5º Aniversário", sprite:"flying-5th-anniv"},
+  // TIER 4
+  {t:4, en:"Green Balloon", pt:"Balão Verde", sprite:"flying-01"},
+  {t:4, en:"Purple Balloon", pt:"Balão Roxo", sprite:"flying-02"},
+  {t:4, en:"Orange Balloon", pt:"Balão Laranja", sprite:"flying-03"},
+  {t:4, en:"Red Balloon", pt:"Balão Vermelho", sprite:"flying-04"},
+  {t:4, en:"Explorer", pt:"Explorador", sprite:"adventure-hat-2020"},
+  {t:4, en:"Worlds 2022", pt:"Mundial 2022", sprite:"wcs-2022"},
+  {t:4, en:"Worlds 2023", pt:"Mundial 2023", sprite:"wcs-2023"},
+  {t:4, en:"Worlds 2024", pt:"Mundial 2024", sprite:"wcs-2024"},
+  {t:4, en:"Varsity Jacket Worlds 2025", pt:"Jaqueta Univeritária Mundial 2025", sprite:"wcs-2025"},
+  {t:4, en:"TCG Hat", pt:"Boné TCG", sprite:"tcg-2022"},
+  {t:4, en:"Willow's Assistant", pt:"Assistente da Willow", sprite:"anniversary-2026"},
+  {t:4, en:"Formal Blue", pt:"Formal Azul", sprite:"monacle-blue"},
+  {t:4, en:"Formal Red", pt:"Formal Vermelho", sprite:"monacle-red"},
+  {t:4, en:"Formal Yellow", pt:"Formal Amarelo", sprite:"monacle-yellow"},
+  {t:4, en:"Pop Star", pt:"Estrela Pop", sprite:"pop-star"},
+  {t:4, en:"Rock Star", pt:"Estrela do Rock", sprite:"rock-star"},
+  {t:4, en:"Detective Pikachu 2023", pt:"Detetive Pikachu 2023", sprite:"pi"},
+  {t:4, en:"PokémonXP Pikachu", pt:"Pikachu PokémonXP", sprite:"pokemon-xp-2026"},
+  {t:4, en:"Worlds 2026", pt:"Mundial 2026", sprite:"worlds-cs-2026"},
+  {t:4, en:"Pikachu Astronaut", pt:"Pikachu Astronauta", sprite:"astronaut"},
+  {t:4, en:"Halloween 2026", pt:"Halloween 2026", sprite:"halloween-2026"},
+  // TIER 5
+  {t:5, en:"Libre", pt:"Libre", sprite:"vs-2019"},
+  {t:5, en:"Clone", pt:"Clone", sprite:"copy-2019"},
+  {t:5, en:"Fragment Hat", pt:"Chapéu Fragment", sprite:"fall-2018"},
+  {t:5, en:"Ph.D.", pt:"Ph.D.", sprite:"doctor"},
+  {t:5, en:"Straw Hat", pt:"Chapéu de Palha", sprite:"may-2019"},
+  {t:5, en:"Baseball Jersey", pt:"Camisa de Beisebol", sprite:"baseball-shirt"},
+  {t:5, en:"Excavator", pt:"Escavador", sprite:"fossil-2026"},
+  {t:5, en:"Kariyushi", pt:"Kariyushi", sprite:"kariyushi"},
+  {t:5, en:"Kurta", pt:"Kurta", sprite:"kurta"},
+  {t:5, en:"Green Shirt (Taipei)", pt:"Camisa Verde (Taipei)", sprite:"tshirt-01"},
+  {t:5, en:"Purple Shirt (Singapore)", pt:"Camisa Roxa (Singapura)", sprite:"tshirt-02"},
+  {t:5, en:"Batik Shirt (Indonesia)", pt:"Camisa Batik (Indonésia)", sprite:"tshirt-03"},
+  {t:5, en:"Blue Shirt Citrus (Jeju)", pt:"Camisa Azul Cítrica (Jeju)", sprite:"jeju"},
+  {t:5, en:"Flying Okinawa", pt:"Okinawa Voador", sprite:"flying-okinawa"},
+  {t:5, en:"Saree", pt:"Sári", sprite:"diwali-2024"},
+  {t:5, en:"Indonesia Jersey", pt:"Camisa da Indonésia", sprite:"indonesia-football"},
+  {t:5, en:"Anniversary 2026 Malasya", pt:"Aniversário 2026 Malásia", sprite:"anniversary-2026-malasya"},
+  {t:5, en:"Anniversary 2026 Philippine", pt:"Aniversário 2026 Filipinas", sprite:"anniversary-2026-philippine"},
+  {t:5, en:"Anniversary 2026 Singapore", pt:"Aniversário 2026 Singapura", sprite:"anniversary-2026-singapore"},
+  {t:5, en:"Anniversary 2026 Taiwan", pt:"Aniversário 2026 Taiwan", sprite:"anniversary-2026-taiwan"},
+  {t:5, en:"Korean Pikachu – Autumn Picnic", pt:"Pikachu da Coreia - Picnic de Outono", sprite:"k-2026-a-01"},
+];
+
+const SPRITE_BASE = "pikachu-sprites/25-pikachu-";
+const STORAGE_KEY = "pikachu-missing-v1";
+
+// Estado: Set de chaves únicas (sprite + en para evitar colisão de sprite)
+let missing = new Set();
+
+function itemKey(item) {
+  return item.sprite + "::" + item.en;
+}
+
+function loadMissing() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr)) missing = new Set(arr);
+    }
+  } catch (_) {}
+}
+
+function saveMissing() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify([...missing]));
+  } catch (_) {}
+}
+
+function updateUI() {
+  const n = missing.size;
+  document.getElementById("selCount").textContent = n;
+  document.getElementById("missingStat").textContent = n;
+  document.getElementById("selectionBar").classList.toggle("visible", n > 0);
+}
+
+// Restaura marcações ANTES de renderizar os cards
+loadMissing();
+
+// Render
+const legendEl = document.getElementById("legend");
+TIERS.forEach(t=>{
+  const d = document.createElement("div");
+  d.className = "legend-item";
+  d.innerHTML = `<span class="dot" style="background:${t.color}"></span>${t.name}`;
+  legendEl.appendChild(d);
+});
+
+const main = document.getElementById("main");
+let total = 0;
+const cardMap = new Map(); // key -> card element
+
+TIERS.forEach(tier=>{
+  const items = ITEMS.filter(i=>i.t===tier.id);
+  total += items.length;
+  const section = document.createElement("section");
+  section.className = "tier";
+  section.innerHTML = `
+    <div class="tier-head">
+      <span class="tier-index">Nível ${tier.id}/5</span>
+      <span class="tier-name">${tier.name}</span>
+      <span class="tier-desc">${tier.desc}</span>
+    </div>
+    <div class="grid"></div>`;
+  const grid = section.querySelector(".grid");
+  items.forEach((item)=>{
+    const key = itemKey(item);
+    const card = document.createElement("div");
+    card.className = "card";
+    card.dataset.key = key;
+    card.setAttribute("role", "button");
+    card.setAttribute("aria-pressed", "false");
+    card.tabIndex = 0;
+    card.innerHTML = `
+      <span class="num">#025</span>
+      <span class="rare-badge" style="background:${tier.color}"></span>
+      <div class="check-mark">✗</div>
+      <div class="icon-wrap">
+        <img src="${SPRITE_BASE}${item.sprite}.png" alt="${item.pt}" loading="lazy"
+             onerror="this.style.opacity='0.25';this.title='Falta: ${item.sprite}'">
+      </div>
+      <h3>${item.pt}</h3>
+      <div class="en">${item.en}</div>`;
+    if (missing.has(key)) {
+      card.classList.add("selected");
+      card.setAttribute("aria-pressed", "true");
+    }
+    card.addEventListener("click", () => toggleMissing(key, card));
+    card.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toggleMissing(key, card);
+      }
+    });
+    grid.appendChild(card);
+    cardMap.set(key, card);
+  });
+  main.appendChild(section);
+});
+document.getElementById("countStat").textContent = total;
+
+function toggleMissing(key, card) {
+  if (missing.has(key)) {
+    missing.delete(key);
+    card.classList.remove("selected");
+    card.setAttribute("aria-pressed", "false");
+  } else {
+    missing.add(key);
+    card.classList.add("selected");
+    card.setAttribute("aria-pressed", "true");
+  }
+  saveMissing();
+  updateUI();
+}
+
+// Actions
+document.getElementById("btnClear").addEventListener("click", () => {
+  if (missing.size === 0) return;
+  if (!confirm("Limpar todas as marcações de faltantes?")) return;
+  missing.clear();
+  cardMap.forEach(card => {
+    card.classList.remove("selected");
+    card.setAttribute("aria-pressed", "false");
+  });
+  saveMissing();
+  updateUI();
+});
+
+// ——— Exportação PDF ———
+function imgElementToDataURL(imgEl) {
+  if (!imgEl || !imgEl.complete || !imgEl.naturalWidth) return null;
+  try {
+    const canvas = document.createElement("canvas");
+    canvas.width = imgEl.naturalWidth;
+    canvas.height = imgEl.naturalHeight;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(imgEl, 0, 0);
+    return canvas.toDataURL("image/png");
+  } catch (_) {
+    return null;
+  }
+}
+
+function loadImageAsDataURL(src, preferredImgEl) {
+  // 1) Prefer already-loaded DOM image (avoids re-fetch / CORS in many cases)
+  if (preferredImgEl) {
+    const fromDom = imgElementToDataURL(preferredImgEl);
+    if (fromDom) return Promise.resolve(fromDom);
+  }
+
+  // 2) fetch + FileReader (funciona bem com servidor local / same-origin)
+  return fetch(src)
+    .then(res => {
+      if (!res.ok) throw new Error("fetch failed");
+      return res.blob();
+    })
+    .then(blob => new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    }))
+    .catch(() => new Promise((resolve) => {
+      // 3) Classic Image fallback (sem crossOrigin — melhor para file://)
+      const img = new Image();
+      img.onload = () => {
+        // Aguarda decode completo quando disponível
+        const finish = () => {
+          try {
+            const canvas = document.createElement("canvas");
+            canvas.width = img.naturalWidth || img.width;
+            canvas.height = img.naturalHeight || img.height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+            resolve(canvas.toDataURL("image/png"));
+          } catch (_) {
+            resolve(null);
+          }
+        };
+        if (img.decode) {
+          img.decode().then(finish).catch(finish);
+        } else {
+          finish();
+        }
+      };
+      img.onerror = () => resolve(null);
+      img.src = src;
+    }));
+}
+
+function getMissingItemsByTier() {
+  const byTier = {};
+  TIERS.forEach(t => byTier[t.id] = []);
+  ITEMS.forEach(item => {
+    if (missing.has(itemKey(item))) byTier[item.t].push(item);
+  });
+  return byTier;
+}
+
+async function exportMissingPdf() {
+  if (missing.size === 0) return;
+  const btn = document.getElementById("btnPdf");
+  const oldText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = "Gerando PDF…";
+
+  try {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: "mm", format: "a4", orientation: "portrait" });
+    const pageW = doc.internal.pageSize.getWidth();
+    const pageH = doc.internal.pageSize.getHeight();
+    const margin = 14;
+    const contentW = pageW - margin * 2;
+
+    // Cores (RGB)
+    const yellow = [255, 203, 5];
+    const dark = [21, 20, 38];
+    const muted = [100, 96, 130];
+    const red = [238, 39, 56];
+
+    // Header
+    doc.setFillColor(...dark);
+    doc.rect(0, 0, pageW, 28, "F");
+    doc.setTextColor(...yellow);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(16);
+    doc.text("Pikachus faltantes • Pokémon GO", margin, 12);
+    doc.setFontSize(9);
+    doc.setTextColor(200, 195, 220);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Total: ${missing.size} fantasia${missing.size !== 1 ? "s" : ""}  ·  Gerado em ${new Date().toLocaleDateString("pt-BR")}`, margin, 20);
+
+    let y = 36;
+    const byTier = getMissingItemsByTier();
+    const cardW = 42;
+    const cardH = 52;
+    const gapX = 6;
+    const gapY = 8;
+    const cols = Math.floor((contentW + gapX) / (cardW + gapX));
+
+    for (const tier of TIERS) {
+      const list = byTier[tier.id];
+      if (!list || list.length === 0) continue;
+
+      // Quebra de página se necessário para o título do tier
+      if (y + 12 > pageH - margin) {
+        doc.addPage();
+        y = margin;
+      }
+
+      // Título do nível
+      const tierRgb = hexToRgb(tier.color);
+      doc.setFillColor(...tierRgb);
+      doc.circle(margin + 2.5, y + 1.5, 2.2, "F");
+      doc.setTextColor(...dark);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(11);
+      doc.text(`${tier.name}  (${list.length})`, margin + 8, y + 3);
+      y += 10;
+
+      let col = 0;
+      for (const item of list) {
+        if (col === 0 && y + cardH > pageH - margin) {
+          doc.addPage();
+          y = margin;
+        }
+
+        const x = margin + col * (cardW + gapX);
+
+        // Card background
+        doc.setFillColor(248, 246, 255);
+        doc.setDrawColor(210, 205, 230);
+        doc.setLineWidth(0.3);
+        doc.roundedRect(x, y, cardW, cardH, 2.5, 2.5, "FD");
+
+        // Rarity strip
+        doc.setFillColor(...tierRgb);
+        doc.rect(x, y, cardW, 2.2, "F");
+
+        // Sprite — usa base64 embutido (funciona offline / file://)
+        const imgSize = 22;
+        const imgX = x + (cardW - imgSize) / 2;
+        const imgY = y + 6;
+        let added = false;
+        const embedded = (window.SPRITE_DATA && window.SPRITE_DATA[item.sprite]) || null;
+        if (embedded) {
+          try {
+            doc.addImage(embedded, "PNG", imgX, imgY, imgSize, imgSize);
+            added = true;
+          } catch (_) {}
+        }
+        // Fallbacks caso o arquivo sprites-data.js não tenha carregado
+        if (!added) {
+          const imgSrc = SPRITE_BASE + item.sprite + ".png";
+          const key = itemKey(item);
+          const cardEl = cardMap.get(key);
+          const preferredImg = cardEl ? cardEl.querySelector("img") : null;
+          if (preferredImg && preferredImg.complete && preferredImg.naturalWidth > 0) {
+            try {
+              doc.addImage(preferredImg, "PNG", imgX, imgY, imgSize, imgSize);
+              added = true;
+            } catch (_) {}
+          }
+          if (!added) {
+            const dataUrl = await loadImageAsDataURL(imgSrc, preferredImg);
+            if (dataUrl) {
+              try {
+                doc.addImage(dataUrl, "PNG", imgX, imgY, imgSize, imgSize);
+                added = true;
+              } catch (_) {}
+            }
+          }
+        }
+        if (!added) {
+          doc.setFillColor(255, 230, 80);
+          doc.circle(x + cardW / 2, y + 15, 9, "F");
+          doc.setTextColor(40, 30, 0);
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(9);
+          doc.text("?", x + cardW / 2, y + 17, { align: "center" });
+        }
+
+        // Names
+        doc.setTextColor(...dark);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(7.5);
+        const ptLines = doc.splitTextToSize(item.pt, cardW - 6);
+        doc.text(ptLines.slice(0, 2), x + cardW / 2, y + 32, { align: "center" });
+
+        doc.setTextColor(...muted);
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(6.5);
+        const enLines = doc.splitTextToSize(item.en, cardW - 6);
+        doc.text(enLines.slice(0, 1), x + cardW / 2, y + 32 + (ptLines.length > 1 ? 7 : 5), { align: "center" });
+
+        // #025
+        doc.setFontSize(5.5);
+        doc.setTextColor(160, 155, 185);
+        doc.text("#025", x + 3, y + cardH - 3);
+
+        col++;
+        if (col >= cols) {
+          col = 0;
+          y += cardH + gapY;
+        }
+      }
+      if (col > 0) y += cardH + gapY;
+      y += 4; // espaço extra entre tiers
+    }
+
+    // Rodapé em todas as páginas
+    const pageCount = doc.internal.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      doc.setFontSize(7);
+      doc.setTextColor(150, 145, 170);
+      doc.setFont("helvetica", "normal");
+      doc.text(
+        "Galeria de Fantasias do Pikachu  ·  Página não-oficial de fã  ·  Pokémon © Nintendo / Game Freak / TPC",
+        pageW / 2,
+        pageH - 6,
+        { align: "center" }
+      );
+      doc.text(`${i} / ${pageCount}`, pageW - margin, pageH - 6, { align: "right" });
+    }
+
+    const filename = `pikachu-faltantes-${missing.size}.pdf`;
+    doc.save(filename);
+    // Feedback tátil de sucesso
+    btn.disabled = false;
+    btn.textContent = oldText;
+    flashButtonSuccess(btn, "PDF pronto! ✓", 1800);
+  } catch (err) {
+    console.error(err);
+    alert("Não foi possível gerar o PDF. Tente novamente ou use a lista de texto.");
+    btn.disabled = false;
+    btn.textContent = oldText;
+  }
+}
+
+function hexToRgb(hex) {
+  const h = hex.replace("#", "");
+  return [
+    parseInt(h.substring(0, 2), 16),
+    parseInt(h.substring(2, 4), 16),
+    parseInt(h.substring(4, 6), 16)
+  ];
+}
+
+document.getElementById("btnPdf").addEventListener("click", () => {
+  exportMissingPdf();
+});
+
+function buildListText() {
+  const byTier = {};
+  TIERS.forEach(t => byTier[t.id] = []);
+  ITEMS.forEach(item => {
+    const key = itemKey(item);
+    if (missing.has(key)) {
+      byTier[item.t].push(item);
+    }
+  });
+  let lines = [];
+  lines.push("⚡ Pikachus que estou faltando:");
+  lines.push("");
+  let any = false;
+  TIERS.forEach(tier => {
+    const list = byTier[tier.id];
+    if (list.length === 0) return;
+    any = true;
+    lines.push(`▸ ${tier.name} (${list.length})`);
+    list.forEach(item => {
+      lines.push(`  • ${item.pt} (${item.en})`);
+    });
+    lines.push("");
+  });
+  if (!any) {
+    lines = ["Nenhum Pikachu marcado como faltante."];
+  } else {
+    lines.push(`Total: ${missing.size} fantasias faltando.`);
+    lines.push("");
+    lines.push("— Lista gerada na Galeria de Fantasias do Pikachu");
+  }
+  return lines.join("\n");
+}
+
+const modalOverlay = document.getElementById("modalOverlay");
+const listPreview = document.getElementById("listPreview");
+
+document.getElementById("btnGenerate").addEventListener("click", () => {
+  if (missing.size === 0) return;
+  listPreview.textContent = buildListText();
+  modalOverlay.classList.add("open");
+});
+
+function closeModal() {
+  modalOverlay.classList.remove("open");
+}
+document.getElementById("modalClose").addEventListener("click", closeModal);
+document.getElementById("btnCloseModal").addEventListener("click", closeModal);
+modalOverlay.addEventListener("click", (e) => {
+  if (e.target === modalOverlay) closeModal();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && modalOverlay.classList.contains("open")) closeModal();
+});
+
+function flashButtonSuccess(btn, successLabel, restoreMs = 1600) {
+  const old = btn.textContent;
+  const wasDisabled = btn.disabled;
+  btn.classList.add("success-flash");
+  btn.textContent = successLabel;
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.classList.remove("success-flash");
+    btn.textContent = old;
+    btn.disabled = wasDisabled;
+  }, restoreMs);
+}
+
+document.getElementById("btnCopy").addEventListener("click", async () => {
+  const text = listPreview.textContent;
+  const btn = document.getElementById("btnCopy");
+  try {
+    await navigator.clipboard.writeText(text);
+    flashButtonSuccess(btn, "Copiado! ✓");
+  } catch (_) {
+    // fallback
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.left = "-9999px";
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      document.execCommand("copy");
+      flashButtonSuccess(btn, "Copiado! ✓");
+    } catch (_) {
+      alert("Não foi possível copiar automaticamente. Selecione o texto e copie manualmente.");
+    }
+    document.body.removeChild(ta);
+  }
+});
+
+// Theme
+const root = document.documentElement;
+const switchEl = document.getElementById("themeSwitch");
+const modeLabel = document.getElementById("modeLabel");
+switchEl.addEventListener("change", ()=>{
+  if(switchEl.checked){ root.setAttribute("data-theme","light"); modeLabel.textContent = "Claro"; }
+  else { root.removeAttribute("data-theme"); modeLabel.textContent = "Escuro"; }
+});
+
+// Init (marcações já restauradas antes do render)
+updateUI();
+
+// Transição ao voltar para o Hub
+(function(){
+  const overlay = document.getElementById("pageTransition");
+  const homeLink = document.getElementById("homeLink");
+  if (!homeLink || !overlay) return;
+  homeLink.addEventListener("click", (e) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
+    e.preventDefault();
+    overlay.classList.add("active");
+    overlay.setAttribute("aria-hidden", "false");
+    setTimeout(() => {
+      window.location.href = homeLink.getAttribute("href");
+    }, 380);
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+# Mestre Yodoh - política de crawlers
+# Nota: robots.txt é uma convenção; bots maliciosos podem ignorá-la.
+# Use Cloudflare Bot Fight Mode / WAF para bloqueio real.
+
+User-agent: *
+Allow: /
+Disallow: /PikachuCostume/sprites-data.js
+Disallow: /PikachuCostume/pikachu-sprites/
+Disallow: /ComunidadesBR/img/
+Disallow: /Ditto/img/
+Disallow: /assets/
+
+# Bloqueia scrapers conhecidos (lista parcial; atualize conforme necessário)
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: PetalBot
+Disallow: /
+
+User-agent: Scrapy
+Disallow: /
+
+User-agent: curl
+Disallow: /
+
+User-agent: wget
+Disallow: /
+
+User-agent: python-requests
+Disallow: /
+
+User-agent: python-urllib
+Disallow: /
+
+Sitemap: https://SEU-DOMINIO.com/sitemap.xml

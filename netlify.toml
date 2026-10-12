@@ -1,0 +1,87 @@
+[build]
+  publish = "."
+
+# Headers globais (espelho do _headers para Netlify)
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "accelerometer=(), autoplay=(), camera=(), display-capture=(), encrypted-media=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(), usb=(), xr-spatial-tracking=(), interest-cohort=()"
+    Cross-Origin-Opener-Policy = "same-origin"
+    Cross-Origin-Resource-Policy = "same-origin"
+    Origin-Agent-Cluster = "?1"
+    X-XSS-Protection = "0"
+    Cache-Control = "public, max-age=0, must-revalidate"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob:; connect-src 'self'; media-src 'self'; worker-src 'self' blob:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
+    X-Permitted-Cross-Domain-Policies = "none"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/PikachuCostume/pikachu-sprites/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/PikachuCostume/sprites-data.js"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+    X-Robots-Tag = "noindex, nofollow, noarchive"
+
+[[headers]]
+  for = "/ComunidadesBR/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/Ditto/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    X-Robots-Tag = "noindex, nofollow"
+
+# HTTPS forçado
+[[redirects]]
+  from = "http://{host}/*"
+  to = "https://{host}/:splat"
+  status = 301
+  force = true
+
+# Bloqueia caminhos sensíveis / ferramentas de ataque comuns
+[[redirects]]
+  from = "/.env"
+  to = "/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/.git/*"
+  to = "/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/wp-admin/*"
+  to = "/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/wp-login.php"
+  to = "/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/xmlrpc.php"
+  to = "/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/phpmyadmin/*"
+  to = "/404.html"
+  status = 404
