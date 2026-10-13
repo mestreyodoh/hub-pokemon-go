@@ -55,6 +55,19 @@
       ]
     },
     {
+      "source": "/pikachu/sprites-data.js",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        }
+      ]
+    },
+    {
       "source": "/assets/(.*)",
       "headers": [
         {
@@ -68,72 +81,71 @@
       ]
     }
   ],
-  "rewrites": [
+  "redirects": [
     {
       "source": "/comunidades",
-      "destination": "/ComunidadesBR/comunidades-pokemon-go-brasil.html"
-    },
-    {
-      "source": "/comunidades/",
-      "destination": "/ComunidadesBR/comunidades-pokemon-go-brasil.html"
+      "destination": "/comunidades/",
+      "permanent": true
     },
     {
       "source": "/pikachu",
-      "destination": "/PikachuCostume/index.html"
-    },
-    {
-      "source": "/pikachu/",
-      "destination": "/PikachuCostume/index.html"
+      "destination": "/pikachu/",
+      "permanent": true
     },
     {
       "source": "/ditto",
-      "destination": "/Ditto/index.html"
+      "destination": "/ditto/",
+      "permanent": true
     },
-    {
-      "source": "/ditto/",
-      "destination": "/Ditto/index.html"
-    }
-  ],
-  "redirects": [
     {
       "source": "/ComunidadesBR/comunidades-pokemon-go-brasil.html",
-      "destination": "/comunidades",
-      "permanent": true
-    },
-    {
-      "source": "/PikachuCostume",
-      "destination": "/pikachu",
-      "permanent": true
-    },
-    {
-      "source": "/PikachuCostume/",
-      "destination": "/pikachu",
+      "destination": "/comunidades/",
       "permanent": true
     },
     {
       "source": "/PikachuCostume/index.html",
-      "destination": "/pikachu",
-      "permanent": true
-    },
-    {
-      "source": "/Ditto",
-      "destination": "/ditto",
-      "permanent": true
-    },
-    {
-      "source": "/Ditto/",
-      "destination": "/ditto",
+      "destination": "/pikachu/",
       "permanent": true
     },
     {
       "source": "/Ditto/index.html",
-      "destination": "/ditto",
+      "destination": "/ditto/",
       "permanent": true
     },
     {
       "source": "/index.html",
       "destination": "/",
       "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/comunidades/",
+      "destination": "/ComunidadesBR/comunidades-pokemon-go-brasil.html"
+    },
+    {
+      "source": "/pikachu/",
+      "destination": "/PikachuCostume/index.html"
+    },
+    {
+      "source": "/ditto/",
+      "destination": "/Ditto/index.html"
+    },
+    {
+      "source": "/pikachu/pikachu-sprites/:path*",
+      "destination": "/PikachuCostume/pikachu-sprites/:path*"
+    },
+    {
+      "source": "/pikachu/sprites-data.js",
+      "destination": "/PikachuCostume/sprites-data.js"
+    },
+    {
+      "source": "/ditto/img/:path*",
+      "destination": "/Ditto/img/:path*"
+    },
+    {
+      "source": "/comunidades/img/:path*",
+      "destination": "/ComunidadesBR/img/:path*"
     }
   ]
 }
