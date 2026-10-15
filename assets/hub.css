@@ -34,10 +34,7 @@ body {
   flex-direction: column;
   transition: background 0.3s ease, color 0.3s ease;
   line-height: 1.5;
-  opacity: 0;
-  animation: pageFadeIn 0.4s ease forwards;
 }
-@keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
 header {
   background: var(--bg-alt);
   border-bottom: 1px solid var(--header-border);
@@ -45,12 +42,12 @@ header {
   position: sticky;
   top: 0;
   z-index: 50;
-  box-shadow: var(--shadow);
-  transition: background 0.3s, border-color 0.3s;
+  width: 100%;
 }
 .header-inner {
-  max-width: 960px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: none;
+  margin: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -66,14 +63,16 @@ header {
 .brand img.avatar {
   width: 40px;
   height: 40px;
-  border-radius: 10px;
+  border-radius: 50%;
   object-fit: cover;
+  display: block;
 }
 .brand-text {
   font-family: 'Baloo 2', sans-serif;
   font-weight: 700;
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   letter-spacing: -0.02em;
+  color: var(--text);
 }
 .brand-text span { color: var(--accent); }
 .theme-toggle {
@@ -98,7 +97,7 @@ header {
   height: 22px;
   border-radius: 50%;
   background: var(--card-bg);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
   transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 [data-theme="light"] .theme-toggle::before { transform: translateX(20px); }
@@ -108,71 +107,67 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  padding: 1rem 1.25rem 2.5rem;
-  max-width: 960px;
+  padding: 2rem 1.25rem 2.5rem;
+  max-width: 1100px;
   margin: 0 auto;
   width: 100%;
 }
 .logo-section {
   text-align: center;
-  margin-top: 0.25rem;
-  margin-bottom: 0.85rem;
+  margin: 0.5rem 0 0.75rem;
 }
 .logo-section img {
-  max-width: min(280px, 72vw);
+  max-width: min(340px, 82vw);
   height: auto;
   display: block;
-  margin: 0 auto 0.5rem;
-  transition: opacity 0.3s ease;
+  margin: 0 auto 0.75rem;
 }
 .logo-section img.logo-dark { display: none; }
+.logo-section img.logo-light { display: block; }
 [data-theme="light"] .logo-section img.logo-light { display: none; }
 [data-theme="light"] .logo-section img.logo-dark { display: block; }
 .tagline {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: var(--text-dim);
   font-weight: 500;
-  margin-bottom: 0.15rem;
+  margin: 0;
 }
 .section-label {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--text-dim);
-  margin-top: 0.35rem;
-  margin-bottom: 1rem;
+  margin: 1.25rem 0 1.25rem;
   text-align: center;
 }
 .cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.15rem;
   width: 100%;
 }
 .card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
-  border-radius: 14px;
-  padding: 1.5rem 1.35rem;
+  border-radius: 16px;
+  padding: 1.4rem 1.25rem 1.2rem;
   text-decoration: none;
   color: inherit;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  gap: 0.7rem;
   box-shadow: var(--shadow);
-  min-height: 180px;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  min-height: 170px;
 }
 .card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
   border-color: var(--accent);
-  box-shadow: 0 12px 32px rgba(0,0,0,0.25);
 }
 .card-icon {
-  width: 64px;
-  height: 64px;
+  width: 56px;
+  height: 56px;
   border-radius: 14px;
   display: flex;
   align-items: center;
@@ -180,25 +175,32 @@ main {
   overflow: hidden;
   flex-shrink: 0;
 }
-.card-icon img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.card-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
 .card-icon.icon-campfire { background: transparent; padding: 0; }
-.card-icon.icon-pikachu { background: rgba(255, 203, 5, 0.15); padding: 2px; }
-.card-icon.icon-pikachu img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
+.card-icon.icon-pikachu { background: rgba(255, 203, 5, 0.15); padding: 4px; }
 [data-theme="light"] .card-icon.icon-pikachu { background: rgba(255, 203, 5, 0.25); }
 .card-icon.icon-ditto { background: rgba(201, 160, 232, 0.18); padding: 4px; }
-.card-icon.icon-ditto img { width: 100%; height: 100%; object-fit: contain; }
-[data-theme="light"] .card-icon.icon-ditto { background: rgba(123, 77, 184, 0.15); }
+[data-theme="light"] .card-icon.icon-ditto { background: rgba(123, 77, 184, 0.12); }
 .card-icon.icon-regionais { background: rgba(80, 160, 220, 0.18); padding: 4px; }
-.card-icon.icon-regionais img { width: 100%; height: 100%; object-fit: contain; }
 [data-theme="light"] .card-icon.icon-regionais { background: rgba(50, 120, 180, 0.12); }
 .card h2 {
   font-family: 'Baloo 2', sans-serif;
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-weight: 700;
   line-height: 1.25;
   color: var(--text);
 }
-.card p { font-size: 0.9rem; color: var(--text-dim); line-height: 1.5; flex: 1; }
+.card p {
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  line-height: 1.45;
+  flex: 1;
+}
 .card .cta {
   display: inline-flex;
   align-items: center;
@@ -206,14 +208,12 @@ main {
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--accent);
-  margin-top: 0.25rem;
-  transition: gap 0.2s ease;
+  margin-top: 0.15rem;
 }
-.card:hover .cta { gap: 10px; }
 .card .cta svg { width: 16px; height: 16px; }
 footer {
   text-align: center;
-  padding: 1.25rem 1rem;
+  padding: 1.15rem 1rem;
   font-size: 0.8rem;
   color: var(--text-dim);
   border-top: 1px solid var(--header-border);
@@ -253,9 +253,11 @@ footer {
   color: var(--text-dim);
 }
 @keyframes spin { to { transform: rotate(360deg); } }
-@media (max-width: 560px) {
-  main { padding: 0.85rem 1rem 2rem; }
-  .logo-section { margin-bottom: 0.65rem; }
-  .card { min-height: auto; padding: 1.25rem 1.15rem; }
+@media (max-width: 600px) {
+  header { padding: 0.75rem 1rem; }
+  main { padding: 1.25rem 1rem 2rem; }
+  .logo-section img { max-width: min(280px, 85vw); margin-bottom: 0.5rem; }
+  .section-label { margin: 1rem 0; }
   .cards { grid-template-columns: 1fr; gap: 1rem; }
+  .card { min-height: auto; }
 }

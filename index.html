@@ -41,8 +41,8 @@
 
   <main>
     <div class="logo-section">
-      <img class="logo-light" src="/assets/logo-mestre-yodoh-claro.png" alt="Mestre Yodoh" width="300">
-      <img class="logo-dark" src="/assets/logo-mestre-yodoh-escuro.png" alt="Mestre Yodoh" width="300">
+      <img class="logo-light" src="/assets/logo-mestre-yodoh-claro.png" alt="Mestre Yodoh">
+      <img class="logo-dark" src="/assets/logo-mestre-yodoh-escuro.png" alt="Mestre Yodoh">
       <p class="tagline">Hub oficial · Pokémon GO</p>
     </div>
 
@@ -51,7 +51,7 @@
     <div class="cards">
       <a href="/comunidades/" class="card">
         <div class="card-icon icon-campfire" aria-hidden="true">
-          <img src="/assets/campfire.png" alt="" width="48" height="48">
+          <img src="/assets/campfire.png" alt="">
         </div>
         <h2>Comunidades Oficiais Brasileiras</h2>
         <p>Grupos e comunidades oficiais de Pokémon GO em todo o Brasil. Busque por cidade e conecte-se com treinadores da sua região.</p>
@@ -112,11 +112,11 @@
 
       if (stored) {
         root.setAttribute('data-theme', stored);
-      } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-        root.setAttribute('data-theme', 'light');
+      } else {
+        root.setAttribute('data-theme', 'dark');
       }
 
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', function () {
         const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
         root.setAttribute('data-theme', next);
         localStorage.setItem('yodoh-theme', next);
@@ -129,13 +129,13 @@
         }
         overlay.classList.add('active');
         overlay.setAttribute('aria-hidden', 'false');
-        setTimeout(() => {
+        setTimeout(function () {
           window.location.href = url;
         }, 380);
       }
 
-      document.querySelectorAll('.card[href]').forEach((card) => {
-        card.addEventListener('click', (e) => {
+      document.querySelectorAll('.card[href]').forEach(function (card) {
+        card.addEventListener('click', function (e) {
           if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
           e.preventDefault();
           navigateWithTransition(card.getAttribute('href'));
