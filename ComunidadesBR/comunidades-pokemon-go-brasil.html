@@ -17,8 +17,12 @@ body{margin:0;font-family:system-ui,sans-serif;background:#0f1115;color:#f0f0f0;
 <script>
 (async function () {
   try {
-    const b64 = await (await fetch("/ComunidadesBR/page.b64")).text();
-    const bin = Uint8Array.from(atob(b64.trim()), function (c) { return c.charCodeAt(0); });
+    const [a, b] = await Promise.all([
+      fetch("/ComunidadesBR/page.b64.1").then(function (r) { return r.text(); }),
+      fetch("/ComunidadesBR/page.b64.2").then(function (r) { return r.text(); })
+    ]);
+    const b64 = (a + b).replace(/\s+/g, "");
+    const bin = Uint8Array.from(atob(b64), function (c) { return c.charCodeAt(0); });
     const ds = new DecompressionStream("gzip");
     const stream = new Response(bin).body.pipeThrough(ds);
     const html = await new Response(stream).text();
