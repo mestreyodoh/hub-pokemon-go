@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Pokémon regionais do Pokémon GO — onde encontrar cada um no mundo real, em português.">
+  <title>Pokémon Regionais | Mestre Yodoh</title>
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.mestreyodoh.com.br/regionais/">
+  <meta property="og:title" content="Pokémon Regionais | Mestre Yodoh">
+  <meta property="og:description" content="Lista dos Pokémon regionais do Pokémon GO e onde eles aparecem no mundo real.">
+  <meta property="og:locale" content="pt_BR">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/assets/PERFIL_BALL_OK.png" type="image/png">
+  <link rel="apple-touch-icon" href="/assets/PERFIL_BALL_OK.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/regionais/regionais.css">
+</head>
+<body>
+  <div class="page-transition" id="pageTransition" aria-hidden="true">
+    <div class="spinner" aria-hidden="true"></div>
+    <span class="loading-text">Carregando…</span>
+  </div>
+  <header>
+    <div class="header-inner">
+      <div class="logo">
+        <a href="/" class="home-link" id="homeLink" title="Voltar ao Hub Mestre Yodoh" aria-label="Voltar ao Hub">🏠</a>
+        <h1>Pokémon <span>Regionais</span></h1>
+      </div>
+      <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema claro/escuro" title="Alternar tema"></button>
+    </div>
+  </header>
+  <main>
+    <div class="hero">
+      <div class="hero-icon"><img src="/regionais/img/Heracross.png" alt="Heracross"></div>
+      <h2>Pokémon Regionais no Pokémon GO</h2>
+      <p class="lede">Onde cada Pokémon regional aparece no mundo real. Use esta lista para planejar trocas, viagens e caçadas — incluindo o que importa para o Brasil.</p>
+      <nav class="toc" id="toc" aria-label="Regiões"></nav>
+      <div class="solstice-note">
+        <strong>Solrock e Lunatone:</strong> normalmente invertem de hemisfério no solstício de verão e voltam a inverter no solstício de inverno. Fora desses períodos, Lunatone fica no Hemisfério Ocidental e Solrock no Hemisfério Oriental (padrão atual sujeito a eventos da Niantic).
+      </div>
+    </div>
+    <div id="sections"></div>
+  </main>
+  <footer>
+    <p>© Mestre Yodoh · Lista de regionais para a comunidade de treinadores · Página não oficial</p>
+  </footer>
+  <script src="/regionais/data.js"></script>
+  <script src="/regionais/regionais.js"></script>
+</body>
+</html>
