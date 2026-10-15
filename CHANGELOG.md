@@ -1,10 +1,14 @@
-# Histórico de versões
+# Changelog
 
-## Versão 1.01 — Implementação de URL Limpa
-- URLs amigáveis: `/comunidades`, `/pikachu`, `/ditto`
-- Redirecionamento permanente das URLs antigas (`.html` / pastas) para as limpas
-- Caminhos de assets em absoluto a partir da raiz (compatível com rewrites do Vercel)
-- Padrão a manter em novas páginas: path limpo em `vercel.json` + links internos sem `.html`
+## Versão 1.02 - Página de Pokémon Regionais
 
-## Versão 1.00 — Site unificado
-- Hub Mestre Yodoh + Comunidades BR + Pikachu de Roupinha + Ditto
+- Nova página `/regionais/` com lista completa de Pokémon regionais e locais no mundo real
+- 4º card no Hub com Heracross
+- Correções: Tauros de Paldea (Água/Combate), Squawkabilly Verde; removidos Amarelo/Branco (globais)
+- Inclusão do Uxie; observação Solrock/Lunatone nos solstícios
+- URL limpa e rewrites de assets
+
+## Versão 1.01 - Implementação de URL Limpa
+
+- URLs limpas: `/comunidades`, `/pikachu`, `/ditto`
+- Redirects permanentes e rewrites de assets

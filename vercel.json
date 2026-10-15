@@ -116,6 +116,16 @@
       "source": "/index.html",
       "destination": "/",
       "permanent": true
+    },
+    {
+      "source": "/regionais",
+      "destination": "/regionais/",
+      "permanent": true
+    },
+    {
+      "source": "/Regionais/index.html",
+      "destination": "/regionais/",
+      "permanent": true
     }
   ],
   "rewrites": [
@@ -146,6 +156,14 @@
     {
       "source": "/comunidades/img/:path*",
       "destination": "/ComunidadesBR/img/:path*"
+    },
+    {
+      "source": "/regionais/",
+      "destination": "/Regionais/index.html"
+    },
+    {
+      "source": "/regionais/img/:path*",
+      "destination": "/Regionais/img/:path*"
     }
   ]
 }
