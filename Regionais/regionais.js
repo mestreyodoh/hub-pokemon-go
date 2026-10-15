@@ -50,7 +50,7 @@
       art.className = 'poke-card';
       let noteHtml = '';
       if (note === 'solsticio') {
-        noteHtml = '<p class="card-note"><strong>Observação:</strong> Lunatone e Solrock normalmente <em>invertem de hemisfério</em> no solstício de verão e voltam a inverter no solstício de inverno.</p>';
+        noteHtml = '<p class="card-note"><strong>Observação:</strong> Lunatone e Solrock normalmente <em>invertem de hemisfério</em> no solstício de verão e voltam a inverter no solstício de inverno (padrão atual sujeito a eventos da Scopely).</p>';
       }
       art.innerHTML = '<div class="sprite"><img src="' + imgSrc(fn) + '" alt="' + esc(name) + '" loading="lazy"></div>' +
         '<h3 class="poke-name">' + esc(name) + '</h3>' +

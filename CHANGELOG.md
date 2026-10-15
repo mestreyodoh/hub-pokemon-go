@@ -1,12 +1,14 @@
 # Changelog
 
-## Versão 1.02 - Página de Pokémon Regionais
+## Versão 1.1 - Pokémon Regionais + ajustes gerais
 
-- Nova página `/regionais/` com lista completa de Pokémon regionais e locais no mundo real
-- 4º card no Hub com Heracross
+- Nova página `/regionais/` com lista completa de Pokémon regionais
+- 4º card no Hub (Heracross)
+- Inclusão de Solrock (Hemisfério Oriental) e Uxie
+- Aviso de solstício apenas nos cards de Solrock e Lunatone (Scopely)
+- Travessões substituídos por hífens (-) em todo o projeto
 - Correções: Tauros de Paldea (Água/Combate), Squawkabilly Verde; removidos Amarelo/Branco (globais)
-- Inclusão do Uxie; observação Solrock/Lunatone nos solstícios
-- URL limpa e rewrites de assets
+- URL limpa `/regionais/` e rewrites de assets
 
 ## Versão 1.01 - Implementação de URL Limpa
 
