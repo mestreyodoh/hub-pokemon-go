@@ -3,167 +3,62 @@
     {
       "source": "/(.*)",
       "headers": [
-        {
-          "key": "Strict-Transport-Security",
-          "value": "max-age=63072000; includeSubDomains; preload"
-        },
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "strict-origin-when-cross-origin"
-        },
-        {
-          "key": "Permissions-Policy",
-          "value": "accelerometer=(), camera=(), geolocation=(), microphone=(), payment=(), usb=(), interest-cohort=()"
-        },
-        {
-          "key": "Cross-Origin-Opener-Policy",
-          "value": "same-origin"
-        },
-        {
-          "key": "Cross-Origin-Resource-Policy",
-          "value": "same-origin"
-        },
-        {
-          "key": "X-XSS-Protection",
-          "value": "0"
-        },
-        {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
-        }
+        {"key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload"},
+        {"key": "X-Content-Type-Options", "value": "nosniff"},
+        {"key": "X-Frame-Options", "value": "DENY"},
+        {"key": "Referrer-Policy", "value": "strict-origin-when-cross-origin"},
+        {"key": "Permissions-Policy", "value": "accelerometer=(), camera=(), geolocation=(), microphone=(), payment=(), usb=(), interest-cohort=()"},
+        {"key": "Cross-Origin-Opener-Policy", "value": "same-origin"},
+        {"key": "Cross-Origin-Resource-Policy", "value": "same-origin"},
+        {"key": "X-XSS-Protection", "value": "0"},
+        {"key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"}
       ]
     },
     {
       "source": "/PikachuCostume/sprites-data.js",
       "headers": [
-        {
-          "key": "X-Robots-Tag",
-          "value": "noindex, nofollow, noarchive"
-        },
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=3600"
-        }
+        {"key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive"},
+        {"key": "Cache-Control", "value": "public, max-age=3600"}
       ]
     },
     {
       "source": "/pikachu/sprites-data.js",
       "headers": [
-        {
-          "key": "X-Robots-Tag",
-          "value": "noindex, nofollow, noarchive"
-        },
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=3600"
-        }
+        {"key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive"},
+        {"key": "Cache-Control", "value": "public, max-age=3600"}
       ]
     },
     {
       "source": "/assets/(.*)",
       "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        },
-        {
-          "key": "X-Robots-Tag",
-          "value": "noindex, nofollow"
-        }
+        {"key": "Cache-Control", "value": "public, max-age=31536000, immutable"},
+        {"key": "X-Robots-Tag", "value": "noindex, nofollow"}
       ]
     }
   ],
   "redirects": [
-    {
-      "source": "/comunidades",
-      "destination": "/comunidades/",
-      "permanent": true
-    },
-    {
-      "source": "/pikachu",
-      "destination": "/pikachu/",
-      "permanent": true
-    },
-    {
-      "source": "/ditto",
-      "destination": "/ditto/",
-      "permanent": true
-    },
-    {
-      "source": "/ComunidadesBR/comunidades-pokemon-go-brasil.html",
-      "destination": "/comunidades/",
-      "permanent": true
-    },
-    {
-      "source": "/PikachuCostume/index.html",
-      "destination": "/pikachu/",
-      "permanent": true
-    },
-    {
-      "source": "/Ditto/index.html",
-      "destination": "/ditto/",
-      "permanent": true
-    },
-    {
-      "source": "/index.html",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/regionais",
-      "destination": "/regionais/",
-      "permanent": true
-    },
-    {
-      "source": "/Regionais/index.html",
-      "destination": "/regionais/",
-      "permanent": true
-    }
+    {"source": "/comunidades", "destination": "/comunidades/", "permanent": true},
+    {"source": "/pikachu", "destination": "/pikachu/", "permanent": true},
+    {"source": "/ditto", "destination": "/ditto/", "permanent": true},
+    {"source": "/ComunidadesBR/comunidades-pokemon-go-brasil.html", "destination": "/comunidades/", "permanent": true},
+    {"source": "/PikachuCostume/index.html", "destination": "/pikachu/", "permanent": true},
+    {"source": "/Ditto/index.html", "destination": "/ditto/", "permanent": true},
+    {"source": "/index.html", "destination": "/", "permanent": true},
+    {"source": "/regionais", "destination": "/regionais/", "permanent": true},
+    {"source": "/Regionais/index.html", "destination": "/regionais/", "permanent": true}
   ],
   "rewrites": [
-    {
-      "source": "/comunidades/",
-      "destination": "/ComunidadesBR/comunidades-pokemon-go-brasil.html"
-    },
-    {
-      "source": "/pikachu/",
-      "destination": "/PikachuCostume/index.html"
-    },
-    {
-      "source": "/ditto/",
-      "destination": "/Ditto/index.html"
-    },
-    {
-      "source": "/pikachu/pikachu-sprites/:path*",
-      "destination": "/PikachuCostume/pikachu-sprites/:path*"
-    },
-    {
-      "source": "/pikachu/sprites-data.js",
-      "destination": "/PikachuCostume/sprites-data.js"
-    },
-    {
-      "source": "/ditto/img/:path*",
-      "destination": "/Ditto/img/:path*"
-    },
-    {
-      "source": "/comunidades/img/:path*",
-      "destination": "/ComunidadesBR/img/:path*"
-    },
-    {
-      "source": "/regionais/",
-      "destination": "/Regionais/index.html"
-    },
-    {
-      "source": "/regionais/img/:path*",
-      "destination": "/Regionais/img/:path*"
-    }
+    {"source": "/comunidades/", "destination": "/ComunidadesBR/comunidades-pokemon-go-brasil.html"},
+    {"source": "/pikachu/", "destination": "/PikachuCostume/index.html"},
+    {"source": "/ditto/", "destination": "/Ditto/index.html"},
+    {"source": "/pikachu/pikachu-sprites/:path*", "destination": "/PikachuCostume/pikachu-sprites/:path*"},
+    {"source": "/pikachu/sprites-data.js", "destination": "/PikachuCostume/sprites-data.js"},
+    {"source": "/ditto/img/:path*", "destination": "/Ditto/img/:path*"},
+    {"source": "/comunidades/img/:path*", "destination": "/ComunidadesBR/img/:path*"},
+    {"source": "/regionais/", "destination": "/Regionais/index.html"},
+    {"source": "/regionais/img/:path*", "destination": "/Regionais/img/:path*"},
+    {"source": "/regionais/data.js", "destination": "/Regionais/data.js"},
+    {"source": "/regionais/regionais.js", "destination": "/Regionais/regionais.js"},
+    {"source": "/regionais/regionais.css", "destination": "/Regionais/regionais.css"}
   ]
 }
