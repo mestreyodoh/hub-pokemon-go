@@ -17,9 +17,18 @@ body{margin:0;font-family:system-ui,sans-serif;background:#0f1115;color:#f0f0f0;
 <script>
 (async function () {
   try {
-    const b64 = "H4sIAAAAAAAAA+1dW3PbSJZ+z6+o1c7G2+ORbSUuBXhmIkuy5Yi2LMmyc2YfZrq6QIqUBBIkAEhZrlr+9z1dAEmAJC/xZMb2zEw0IgHd55w+t+/T3YA/fP/zX37/u7/++e9//ePvP/zpz3/56x/+8Mc//OHv//j7H/7whz/88Y9//OMf//jHP/7xj3/84x//+Mc//vGPf/zjH/8Y/z9+/OMf//jHP/7xj3/84x//+Mc//vGPf/zjH/8Y/z9+/OMf//jHP/7xj3/84x//+Mc//vGPf/zjH/8Y/z9+/OMf//jHP/7xj3/84x//+Mc//vGPf/zjH/8Y/z9+/OMf//jHP/7xj3/84x//+Mc//vGPf/zjH/8Y/z9+/OMf//jHP/7xj3/84x//+Mc//vGPf/zjH/8Y/z9+/OMf//jHP/7xj3/84x//+Mc//vGPf/zjH/8Y/z9+/OMf//jHP/7xj3/84x//+Mc//vGPf/zjH/8Y/z9+/OMf//jHP/7xj3/84x//+Mc//vGPf/zjH/8Y/z9+/OMf//jHP/7xj3/84x//+Mc//vGPf/zjH/8Y/z9+/OMf//jHP/7xj3/84x//+Mc//vGPf/zjH/8Y/z9+/OMf//jHP/7xj3/84x//+Mc//vGPf/zjH/8Y/z9+/OMf//jHP/7xj3/84x//+Mc//vGPf/zjH/8Y/z9+/OMf//jHP/7xj3/84x//+Mc//vGPf/zjH/8Y/z9+/OMf//jHP/7xj3/84x//+Mc//vGPf/zjH/8Y/z9+/OMf//jHP/7xj3/84x//+Mc//vGPf/zjH/8Y/z9+/OMf//jHP/7xj3/84x//+Mc//vGPf/zjH/8Y/z9+/OMf//jHP/7xj3/84x//+Mc//vGPf/zjH/8Y/z9+/OMf//jHP/7xj3/84x//+Mc//vGPf/zjH/8Y/z9+/OMf//jHP/7xj3/84x//+Mc//vGPf/zjH/8Y/z9+/OMf//jHP/7xj3/84x//+Mc//vGPf/zjH/8Y/z9+/OMf//jHP/7xj3/84x//+Mc//vGPf/zjH/8Y/z9+/OMf//jHP/7xj3/84x//+Mc//vGPf/zjH/8Y/z9+/OMf//jHP/7xj3/84x//+Mc//vGPf/zjH/8Y/z9+/OMf//jHP/7xj3/84x//+Mc//vGPf/zjH/8Y/z9+/OMf//jHP/7xj3/84x//+Mc//vGPf/zjH/8Y/z9+/OMf//jHP/7xj3/84x//;"
-    // PLACEHOLDER - will fix
-  } catch (e) {}
+    const b64 = await (await fetch("/ComunidadesBR/page.b64")).text();
+    const bin = Uint8Array.from(atob(b64.trim()), function (c) { return c.charCodeAt(0); });
+    const ds = new DecompressionStream("gzip");
+    const stream = new Response(bin).body.pipeThrough(ds);
+    const html = await new Response(stream).text();
+    document.open();
+    document.write(html);
+    document.close();
+  } catch (e) {
+    document.body.innerHTML = "<p style=\"padding:2rem;text-align:center\">Erro ao carregar. Atualize a página.</p>";
+    console.error(e);
+  }
 })();
 </script>
 </body>
