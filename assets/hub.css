@@ -117,7 +117,7 @@ main {
   margin: 0.5rem 0 0.75rem;
 }
 .logo-section img {
-  max-width: min(340px, 82vw);
+  max-width: min(102px, 25vw);
   height: auto;
   display: block;
   margin: 0 auto 0.75rem;
@@ -256,7 +256,7 @@ footer {
 @media (max-width: 600px) {
   header { padding: 0.75rem 1rem; }
   main { padding: 1.25rem 1rem 2rem; }
-  .logo-section img { max-width: min(280px, 85vw); margin-bottom: 0.5rem; }
+  .logo-section img { max-width: min(84px, 28vw); margin-bottom: 0.5rem; }
   .section-label { margin: 1rem 0; }
   .cards { grid-template-columns: 1fr; gap: 1rem; }
   .card { min-height: auto; }
