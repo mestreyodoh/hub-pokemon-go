@@ -60,7 +60,6 @@
       to { opacity: 1; }
     }
 
-    /* Transition overlay */
     .page-transition {
       position: fixed;
       inset: 0;
@@ -255,7 +254,6 @@
     }
     .note strong { color: var(--text); }
 
-    /* Disguise grid */
     .disguise-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -292,12 +290,7 @@
       font-weight: 600;
       color: var(--text);
     }
-    .disguise-card.no-img .sprite {
-      font-size: 1.75rem;
-      color: var(--text-dim);
-    }
 
-    /* Shiny box */
     .shiny-box {
       display: flex;
       flex-wrap: wrap;
@@ -347,7 +340,6 @@
       margin-bottom: 0.5rem;
     }
 
-    /* FAQ */
     .faq-list {
       display: flex;
       flex-direction: column;
@@ -379,10 +371,9 @@
       font-weight: 400;
       color: var(--accent);
       flex-shrink: 0;
-      transition: transform 0.2s;
     }
     .faq-item[open] summary::after {
-      content: '−';
+      content: '\2212';
     }
     .faq-item .faq-body {
       padding: 0 1.15rem 1.1rem;
@@ -438,7 +429,7 @@
   <header>
     <div class="header-inner">
       <div class="logo">
-        <a href="../index.html" class="home-link" id="homeLink" title="Voltar ao Hub Mestre Yodoh" aria-label="Voltar ao Hub">🏠</a>
+        <a href="/" class="home-link" id="homeLink" title="Voltar ao Hub Mestre Yodoh" aria-label="Voltar ao Hub">🏠</a>
         <h1>Ditto <span>Pokémon GO</span></h1>
       </div>
       <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema claro/escuro" title="Alternar tema"></button>
@@ -600,6 +591,15 @@
           }, 380);
         });
       }
+
+      function clearTransitionOverlay() {
+        if (!overlay) return;
+        overlay.classList.remove('active');
+        overlay.setAttribute('aria-hidden', 'true');
+      }
+      window.addEventListener('pageshow', clearTransitionOverlay);
+      window.addEventListener('pagehide', clearTransitionOverlay);
+      window.addEventListener('popstate', clearTransitionOverlay);
     })();
   </script>
 </body>
